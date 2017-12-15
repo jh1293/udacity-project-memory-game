@@ -1,0 +1,272 @@
+@import 'reset';
+@import 'helper';
+@import 'general';
+
+.container {
+  display: flex;
+
+  header {
+    background: #333;
+
+    .header {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      &__logo {
+        color: white;
+      }
+
+      &__title {
+
+      }
+    }
+  }
+
+  section {
+    background: #fff;
+
+    .panel {
+
+      .btn__start {
+        width: 128px;
+        height: 32px;
+        border-radius: 6px;
+        font: 1em/1.5 Arial;
+        color: white;
+        background: #06c9be;
+        transition: box-shadow 0.3s;
+      }
+
+      .btn__start:hover {
+        box-shadow: 0 2px 5px 2px #bbb;
+      }
+
+      .btn__start:active {
+        box-shadow: 0 0 3px 1px #bbb;
+      }
+    }
+  }
+
+  main {
+    background: #eee;
+
+    .game {
+
+      .table {
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(to bottom right, #03cbbe, #a880ce);
+        box-shadow: 5px 5px 20px 5px #ccc;
+
+        .card {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          cursor: pointer;
+          font-size: 0;
+          background: #2f3c4a;
+          color: white;
+        }
+
+        .card--status-unfold {
+          font-size: 1.5em;
+          background: #51a8c6;
+        }
+
+        .card--status-match {
+          font-size: 1.5em;
+          background: #16c594;
+        }
+
+        .card--status-unmatch {
+          font-size: 1.5em;
+          background: orange;
+        }
+      }
+    }
+  }
+
+  footer {
+    width: 100%;
+    padding: 1em;
+    background: #ddd;
+
+    .footer {
+
+    }
+  }
+}
+
+@media screen and (max-width: 425px) {
+  .container {
+    flex-flow: column wrap;
+
+    header {
+      order: 1;
+    }
+
+    section {
+      order: 2;
+    }
+
+    main {
+      order: 3;
+      width: 100%;
+      padding: 10px;
+      margin: 0 auto;
+
+      .game {
+
+        .table {
+          width: 290px;
+          padding: 5px;
+          border-radius: 8px;
+          margin: 0 auto;
+
+          .card {
+            width: 60px;
+            height: 60px;
+            margin: 5px;
+            border-radius: 4px;
+          }
+        }
+      }
+    }
+
+    footer {
+      order: 4;
+    }
+  }
+}
+
+@media screen and (min-width: 426px) and (max-width: 768px) {
+  .container {
+    flex-flow: column wrap;
+
+    header {
+      order: 1;
+    }
+
+    section {
+      order: 2;
+    }
+
+    main {
+      order: 3;
+      width: 100%;
+      padding: 1em;
+
+      .game {
+
+        .table {
+          width: 370px;
+          padding: 5px;
+          border-radius: 10px;
+          margin: 0 auto;
+
+          .card {
+            width: 80px;
+            height: 80px;
+            margin: 5px;
+            border-radius: 8px;
+          }
+        }
+      }
+    }
+
+    footer {
+      order: 4;
+    }
+  }
+}
+
+@media screen and (min-width: 769px) and (max-width: 1024px) {
+  .container {
+    flex-flow: row wrap;
+
+    header {
+      flex: 1 1 100%;
+      order: 1;
+    }
+
+    section {
+      flex: 1 1 25%;
+      order: 2;
+    }
+
+    main {
+      flex: 1 1 75%;
+      order: 3;
+      padding: 2em;
+
+      .game {
+
+        .table {
+          width: 500px;
+          padding: 10px;
+          border-radius: 16px;
+          margin: 0 auto;
+
+          .card {
+            width: 100px;
+            height: 100px;
+            margin: 10px;
+            border-radius: 8px;
+          }
+        }
+      }
+    }
+
+    footer {
+      flex: 1 1 100%;
+      order: 4;
+    }
+  }
+}
+
+@media screen and (min-width: 1025px) {
+  .container {
+    flex-flow: row wrap;
+
+    header {
+      flex: 1 1 15%;
+      order: 1;
+    }
+
+    section {
+      flex: 1 1 15%;
+      order: 3;
+    }
+
+    main {
+      flex: 1 1 50%;
+      order: 2;
+      padding: 2em;
+
+      .game {
+
+        .table {
+          width: 500px;
+          padding: 10px;
+          border-radius: 16px;
+          margin: 0 auto;
+
+          .card {
+            width: 100px;
+            height: 100px;
+            margin: 10px;
+            border-radius: 8px;
+          }
+        }
+      }
+    }
+
+    footer {
+      flex: 1 1 100%;
+      order: 4;
+    }
+  }
+}
