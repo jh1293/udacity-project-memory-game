@@ -9,6 +9,16 @@ let signList = [
   '<i class="fa fa-stack-overflow"></i>',
   '<i class="fa fa-github"></i>'
 ];
+// let signList = [
+//   '<i class="fa fa-firefox"></i>',
+//   '<i class="fa fa-firefox"></i>',
+//   '<i class="fa fa-firefox"></i>',
+//   '<i class="fa fa-firefox"></i>',
+//   '<i class="fa fa-firefox"></i>',
+//   '<i class="fa fa-firefox"></i>',
+//   '<i class="fa fa-firefox"></i>',
+//   '<i class="fa fa-firefox"></i>'
+// ];
 let matchMode = false;
 
 /**
@@ -54,7 +64,11 @@ function init() {
  * Unfold card and set current clicked card as active.
  */
 function setActive(obj) {
-  obj.addClass('card--status-unfold card--status-active');
+  obj.addClass('card--status-active');
+  obj.css('animation', 'unfold 0.4s');
+  setTimeout(function(){
+    obj.addClass('card--status-unfold');
+  }, 200);
 }
 
 /**
@@ -72,21 +86,30 @@ function matching() {
     if (currentActiveCards.first().html() == currentActiveCards.last().html()) {
       // Match
       currentActiveCards.addClass('card--status-match');
-      currentActiveCards.removeClass('card--status-active');
+      currentActiveCards.css('animation', 'match 0.6s');
+      setTimeout(function() {
+        currentActiveCards.attr('style', '');
+        currentActiveCards.removeClass('card--status-active');
+        matchMode = false;
+      }, 600);
     } else {
       // Unmatch
       currentActiveCards.addClass('card--status-unmatch');
-      // Wait for 0.5s, allowing unmatch animation to process
+      currentActiveCards.css('animation', 'unmatch 0.4s');
+      // Wait for 0.8s, allowing unmatch animation to process
       setTimeout(function() {
-        currentActiveCards.removeClass('card--status-unfold');
-        currentActiveCards.removeClass('card--status-unmatch');
-        currentActiveCards.removeClass('card--status-active');
-      }, 500);
+        currentActiveCards.css('animation', 'unfold 0.4s reverse');
+        // When 'unfold 0.4s reverse' in half, Initialize card
+        setTimeout(function(){
+          // When 'unfold 0.4s reverse finished', empty animation, turn off match mode
+          setTimeout(function(){
+            currentActiveCards.attr('style', '');
+            matchMode = false;
+          }, 200);
+          currentActiveCards.removeClass('card--status-unfold card--status-unmatch card--status-active');
+        }, 200);
+      }, 400);
     }
-    // As the unmatch animation ends, turn off match mode
-    setTimeout(function() {
-      matchMode = false;
-    }, 500);
   }
 }
 
@@ -107,12 +130,16 @@ $('#btn-start').click(function() {
 /**
  * Card <li> click event.
  */
+let cardPool = [];
 $('.card').click(function() {
+  //currentActiveCards.attr('style', '');
   // Check if the card is disabled
   let disabled = matchMode || $(this).hasClass('card--status-match') || $(this).hasClass('card--status-unmatch') || $(this).hasClass('card--status-unfold') || $(this).hasClass('card--status-active');
   // Processing if not disabled
   if (!disabled) {
   setActive($(this));
-  }
   matching();
+  }
 });
+
+// TODO Refactor animation code

@@ -71,19 +71,39 @@
           color: white;
         }
 
+        @keyframes unfold {
+          0% {transform: rotateY(0deg);}
+          50% {transform: rotateY(90deg);}
+          100% {transform: rotateY(0deg);}
+        }
+
+        @keyframes match {
+          0% {transform: scale(1, 1);}
+          30% {transform: scale(1.1, 0.8);}
+          60% {transform: scale(1, 1);}
+          75% {transform: scale(1.1, 0.9);}
+          100% {transform: scale(1, 1);}
+        }
+
+        @keyframes unmatch {
+          0% {transform: rotate(0deg);}
+          50% {transform: rotate(-5deg) translate(-10px, 0px);}
+          100% {transform: rotate(0deg);}
+        }
+
         .card--status-unfold {
           font-size: 1.5em;
-          background: #51a8c6;
+          background: #00B3E4;
         }
 
         .card--status-match {
           font-size: 1.5em;
-          background: #16c594;
+          background: #00CDBA;
         }
 
         .card--status-unmatch {
           font-size: 1.5em;
-          background: orange;
+          background: #F95B3C;
         }
       }
     }
