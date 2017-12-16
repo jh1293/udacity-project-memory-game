@@ -22,11 +22,11 @@ let signList = [
 let matchMode = false;
 
 /**
- * Create an array which should be shuffled.
+ * Create an array that maps all cards in the table.
  * @param {array} array - List of signs.
  * @returns {array} An array which doubles the list of signs.
  */
-function createSignArray (array) {
+function createSignArray(array) {
   return [...array, ...array];
 }
 
@@ -35,7 +35,7 @@ function createSignArray (array) {
  * @param {array} array - Array to be shuffled.
  * @return {array} Array that been shuffled.
  */
-function shuffle (array) {
+function shuffle(array) {
     let i = array.length, r, c;
     while (i) {
         r = Math.floor(Math.random() * i--);
@@ -55,13 +55,23 @@ function shuffle (array) {
 function init() {
   let signArray = shuffle(createSignArray(signList));
   $('.card').each(function(index) {
-    $(this).removeClass('card--animation-reveal card--animation-match card--animation-unmatch card--flag-active');
+    $(this).removeClass('card--status-matched card--status-revealed card--animation-reveal card--animation-match card--animation-unmatch card--flag-active');
     $(this).html(signArray[index]);
   });
 }
 
 /**
- * Unfold card and set current clicked card as active.
+ * Check if currently clicked card is suitable for activate.
+ * @param {object} obj - jQuery object to be checked.
+ * @return {boolean}
+ */
+function isEnabled(obj) {
+  let disabled = matchMode || obj.hasClass('card--status-revealed') || obj.hasClass('card--status-matched');
+  return !disabled;
+}
+/**
+ * Activate current clicked card by adding animation class, active flag class and revealed status class.
+ * @param {object} obj - jQuery object to be activated.
  */
 function activate(obj) {
   obj.addClass('card--animation-reveal card--flag-active');
@@ -72,14 +82,11 @@ function activate(obj) {
 
 /**
  * Matching process.
- * Use '.card--flag-active' as a temporary flag for identifying two recently clicked cards.
- * '.card--animation-match' will be added to matched cards perminately, these cards will no longer participate matching.
- * '.card--animation-unmatch' will be added to matched cards temporarily, these cards will participate matching again.
+ * @param {object} activeCards - Collection of card that been flaged with active.
  */
 function matching(activeCards) {
   if (activeCards.length == 2) {
-
-    // As matching process, turn on match mode in order to disable card clicking
+    // As matching processes, disable other cards
     matchMode = true;
 
     if (activeCards.first().html() == activeCards.last().html()) {
@@ -113,11 +120,10 @@ $('#btn-start').click(function() {
 
 /** Card <li> click event. */
 $('.card').click(function() {
-  let disabled = matchMode || $(this).hasClass('card--status-revealed') || $(this).hasClass('card--status-matched')
-  if (!disabled) {
-    activate($(this));
-    matching($('.card--flag-active'));
+  if (
+    isEnabled($(this))
+  ) {
+  activate($(this));
+  matching($('.card--flag-active'));
   }
 });
-
-// TODO Refactor animation code
