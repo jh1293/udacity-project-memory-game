@@ -1,6 +1,7 @@
 @import 'reset';
 @import 'helper';
 @import 'general';
+@import 'animation';
 
 .container {
   display: flex;
@@ -72,46 +73,26 @@
           transition: background 0.3s, font-size 0.2s 0.2s;
         }
 
-        @keyframes unfold {
-          0% {transform: rotateY(0deg);}
-          50% {transform: rotateY(90deg);}
-          100% {transform: rotateY(0deg);}
-        }
-
-        @keyframes match {
-          0% {transform: scale(1, 1);}
-          30% {transform: scale(1.1, 0.8);}
-          60% {transform: scale(1, 1);}
-          75% {transform: scale(1.1, 0.9);}
-          100% {transform: scale(1, 1);}
-        }
-
-        @keyframes unmatch {
-          0% {transform: rotate(0deg);}
-          50% {transform: rotate(-5deg) translate(-10px, 0px);}
-          100% {transform: rotate(0deg);}
-        }
-
-        .card--status-fold {
-          font-size: 0;
-          background: #2f3c4a;
-          animation: unfold 0.4s reverse;
-        }
-
-        .card--status-unfold {
+        .card--status-revealed {
           font-size: 1.5em;
           background: #00B3E4;
-          animation: unfold 0.4s;
         }
 
-        .card--status-match {
+        .card--status-matched {
           font-size: 1.5em;
           background: #00CDBA;
         }
 
-        .card--status-unmatch {
-          font-size: 1.5em;
-          background: #F95B3C;
+        .card--animation-reveal {
+          animation: reveal 0.4s;
+        }
+
+        .card--animation-match {
+          animation: match 0.6s;
+        }
+
+        .card--animation-unmatch {
+          animation: unmatch 1s;
         }
       }
     }

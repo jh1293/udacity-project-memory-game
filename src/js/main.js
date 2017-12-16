@@ -55,7 +55,7 @@ function shuffle (array) {
 function init() {
   let signArray = shuffle(createSignArray(signList));
   $('.card').each(function(index) {
-    $(this).removeClass('card--status-unfold card--status-match card--status-unmatch card--status-active');
+    $(this).removeClass('card--animation-reveal card--animation-match card--animation-unmatch card--flag-active');
     $(this).html(signArray[index]);
   });
 }
@@ -63,84 +63,60 @@ function init() {
 /**
  * Unfold card and set current clicked card as active.
  */
-function setActive(obj) {
-  obj.addClass('card--status-active');
-  // obj.css('animation', 'unfold 0.4s');
-  // setTimeout(function(){
-    obj.addClass('card--status-unfold');
-  // }, 200);
+function activate(obj) {
+  obj.addClass('card--animation-reveal card--flag-active');
+  setTimeout(function() {
+    obj.addClass('card--status-revealed');
+  }, 400);
 }
 
 /**
  * Matching process.
- * Use '.card--status-active' as a temporary flag for identifying two recently clicked cards.
- * '.card--status-match' will be added to matched cards perminately, these cards will no longer participate matching.
- * '.card--status-unmatch' will be added to matched cards temporarily, these cards will participate matching again.
+ * Use '.card--flag-active' as a temporary flag for identifying two recently clicked cards.
+ * '.card--animation-match' will be added to matched cards perminately, these cards will no longer participate matching.
+ * '.card--animation-unmatch' will be added to matched cards temporarily, these cards will participate matching again.
  */
-function matching() {
-  let currentActiveCards = $('.card--status-active');
-  // Only process matching when there are two active cards, preventing double matching or parallel matching
-  if (currentActiveCards.length == 2) {
-    // Turn on match mode, preventing user from clicking other cards before unmatch animation ends
+function matching(activeCards) {
+  if (activeCards.length == 2) {
+
+    // As matching process, turn on match mode in order to disable card clicking
     matchMode = true;
-    if (currentActiveCards.first().html() == currentActiveCards.last().html()) {
+
+    if (activeCards.first().html() == activeCards.last().html()) {
       // Match
-      currentActiveCards.addClass('card--status-match');
-      currentActiveCards.css('animation', 'match 0.6s');
+      activeCards.addClass('card--animation-match');
       setTimeout(function() {
-        currentActiveCards.attr('style', '');
-        currentActiveCards.removeClass('card--status-active');
         matchMode = false;
+        activeCards.addClass('card--status-matched');
+        activeCards.removeClass('card--status-revealed card--animation-reveal card--animation-match card--flag-active');
       }, 600);
     } else {
       // Unmatch
-      currentActiveCards.addClass('card--status-unmatch');
-      currentActiveCards.css('animation', 'unmatch 0.4s');
-      // Wait for 0.8s, allowing unmatch animation to process
+      activeCards.addClass('card--animation-unmatch');
       setTimeout(function() {
-        currentActiveCards.addClass('card--status-fold');
-
-        // currentActiveCards.css('animation', 'unfold 0.4s reverse');
-        // When 'unfold 0.4s reverse' in half, Initialize card
-        setTimeout(function(){
-          // When 'unfold 0.4s reverse finished', empty animation, turn off match mode
-          setTimeout(function(){
-            currentActiveCards.attr('style', '');
-            matchMode = false;
-          }, 200);
-          currentActiveCards.removeClass('card--status-unfold card--status-unmatch card--status-active');
-        }, 200);
-      }, 400);
+          matchMode = false;
+          activeCards.removeClass('card--status-revealed card--animation-reveal card--animation-unmatch card--flag-active');
+      }, 1000);
     }
   }
 }
 
-/**
- * Document ready click event.
- */
+/** Document ready click event. */
 $(document).ready(function() {
   init();
 });
 
-/**
- * Start Game <button> click event.
- */
+/** Start Game <button> click event. */
 $('#btn-start').click(function() {
   init();
 });
 
-/**
- * Card <li> click event.
- */
-let cardPool = [];
+/** Card <li> click event. */
 $('.card').click(function() {
-  //currentActiveCards.attr('style', '');
-  // Check if the card is disabled
-  let disabled = matchMode || $(this).hasClass('card--status-match') || $(this).hasClass('card--status-unmatch') || $(this).hasClass('card--status-unfold') || $(this).hasClass('card--status-active');
-  // Processing if not disabled
+  let disabled = matchMode || $(this).hasClass('card--status-revealed') || $(this).hasClass('card--status-matched')
   if (!disabled) {
-  setActive($(this));
-  matching();
+    activate($(this));
+    matching($('.card--flag-active'));
   }
 });
 
