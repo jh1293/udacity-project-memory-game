@@ -9,15 +9,25 @@
 //   '<i class="fa fa-stack-overflow"></i>',
 //   '<i class="fa fa-github"></i>'
 // ];
+// let signList = [
+//   '<i class="fa fa-firefox"></i>',
+//   '<i class="fa fa-firefox"></i>',
+//   '<i class="fa fa-firefox"></i>',
+//   '<i class="fa fa-firefox"></i>',
+//   '<i class="fa fa-chrome"></i>',
+//   '<i class="fa fa-chrome"></i>',
+//   '<i class="fa fa-chrome"></i>',
+//   '<i class="fa fa-chrome"></i>'
+// ];
 let signList = [
   '<i class="fa fa-firefox"></i>',
   '<i class="fa fa-firefox"></i>',
   '<i class="fa fa-firefox"></i>',
   '<i class="fa fa-firefox"></i>',
-  '<i class="fa fa-chrome"></i>',
-  '<i class="fa fa-chrome"></i>',
-  '<i class="fa fa-chrome"></i>',
-  '<i class="fa fa-chrome"></i>'
+  '<i class="fa fa-firefox"></i>',
+  '<i class="fa fa-firefox"></i>',
+  '<i class="fa fa-firefox"></i>',
+  '<i class="fa fa-firefox"></i>'
 ];
 let matchMode = false;
 
@@ -46,18 +56,65 @@ function shuffle(array) {
     return array;
 }
 
-/**
- * Initialize all cards.
- * 1. Create sign array and shuffle it.
- * 2. Iterate DOM by .card, remove all other classes.
- * 3. Iterate DOM by .card, replace its content with sign accordingly.
- */
+// Game State: 10 - Standby; 20 - running; 30 - Game Over
+let playDuration = 29;
+let gameState;
+let matchedNumber = 0;
+let gameClock;
+let tier;
+
+function finishing() {
+  tier = Math.floor(--playDuration / 30);
+  if (tier == 0) {
+    console.log('Best');
+    $('#board-score').html('<i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i>');
+  } else if (tier == 1) {
+    console.log('Good');
+    $('#board-score').html('<i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i>');
+
+  } else {
+    console.log('Keep Practice');
+    $('#board-score').html('<i class="fa fa-star" aria-hidden="true"></i>');
+  }
+  $('.board').removeClass('board--hide');
+}
+
+let elemPlayDuration = $('#play-duration');
+
+/** Initializing game. */
 function init() {
-  let signArray = shuffle(createSignArray(signList));
+  // Initialize game logic related variables
+  gameState = 20; // State: Keep Running
+  playDuration = 0;
+  matchedNumber = 0;
+  if (gameClock) {
+    window.clearInterval(gameClock);
+  }
+  elemPlayDuration.text('');
+
+  // Assgin signs to cards
+  let signArray = shuffle(createSignArray(signList)); // Create sign array and shuffle it
   $('.card').each(function(index) {
-    $(this).removeClass('card--flag-matched card--animation-reveal card--animation-match card--animation-unmatch card--flag-active');
-    $(this).html(signArray[index]);
+    $(this).removeClass('card--flag-matched card--animation-reveal card--animation-match card--animation-unmatch card--flag-active'); // Iterate DOM by .card, remove all other classes
+    $(this).html(signArray[index]); // Iterate DOM by .card, replace its content with sign accordingly
   });
+
+  // Start main loop
+  gameClock = window.setInterval(function() {
+   switch (gameState) {
+     case 20:
+       if (matchedNumber == 8) {
+         gameState = 30;
+       } else {
+         elemPlayDuration.text(playDuration++);
+       }
+       break;
+     case 30:
+       window.clearInterval(gameClock);
+       finishing();
+       break;
+    }
+  }, 1000);
 }
 
 /**
@@ -88,6 +145,8 @@ function matching(activeCards) {
 
     if (activeCards.first().html() == activeCards.last().html()) {
       // Match
+      matchedNumber++;
+      console.log(matchedNumber);
       activeCards.addClass('card--animation-match');
       window.setTimeout(function() {
         activeCards.addClass('card--flag-matched');
@@ -107,7 +166,7 @@ function matching(activeCards) {
 
 /** Document ready click event. */
 $(document).ready(function() {
-  init();
+  // init();
 });
 
 /** Start Game <button> click event. */
@@ -123,4 +182,10 @@ $('.card').click(function() {
   activate($(this));
   matching($('.card--flag-active'));
   }
+});
+
+/** Start Game <button> click event. */
+$('#btn-replay').click(function() {
+  init();
+  $('.board').addClass('board--hide');
 });
