@@ -65,10 +65,10 @@ function init() {
  */
 function setActive(obj) {
   obj.addClass('card--status-active');
-  obj.css('animation', 'unfold 0.4s');
-  setTimeout(function(){
+  // obj.css('animation', 'unfold 0.4s');
+  // setTimeout(function(){
     obj.addClass('card--status-unfold');
-  }, 200);
+  // }, 200);
 }
 
 /**
@@ -98,7 +98,9 @@ function matching() {
       currentActiveCards.css('animation', 'unmatch 0.4s');
       // Wait for 0.8s, allowing unmatch animation to process
       setTimeout(function() {
-        currentActiveCards.css('animation', 'unfold 0.4s reverse');
+        currentActiveCards.addClass('card--status-fold');
+
+        // currentActiveCards.css('animation', 'unfold 0.4s reverse');
         // When 'unfold 0.4s reverse' in half, Initialize card
         setTimeout(function(){
           // When 'unfold 0.4s reverse finished', empty animation, turn off match mode

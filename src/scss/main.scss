@@ -69,6 +69,7 @@
           font-size: 0;
           background: #2f3c4a;
           color: white;
+          transition: background 0.3s, font-size 0.2s 0.2s;
         }
 
         @keyframes unfold {
@@ -91,9 +92,16 @@
           100% {transform: rotate(0deg);}
         }
 
+        .card--status-fold {
+          font-size: 0;
+          background: #2f3c4a;
+          animation: unfold 0.4s reverse;
+        }
+
         .card--status-unfold {
           font-size: 1.5em;
           background: #00B3E4;
+          animation: unfold 0.4s;
         }
 
         .card--status-match {
