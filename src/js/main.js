@@ -1,24 +1,24 @@
 /** Global variables. */
+// let signList = [
+//   '<i class="fa fa-internet-explorer"></i>',
+//   '<i class="fa fa-firefox"></i>',
+//   '<i class="fa fa-chrome"></i>',
+//   '<i class="fa fa-opera"></i>',
+//   '<i class="fa fa-safari"></i>',
+//   '<i class="fa fa-edge"></i>',
+//   '<i class="fa fa-stack-overflow"></i>',
+//   '<i class="fa fa-github"></i>'
+// ];
 let signList = [
-  '<i class="fa fa-internet-explorer"></i>',
+  '<i class="fa fa-firefox"></i>',
+  '<i class="fa fa-firefox"></i>',
+  '<i class="fa fa-firefox"></i>',
   '<i class="fa fa-firefox"></i>',
   '<i class="fa fa-chrome"></i>',
-  '<i class="fa fa-opera"></i>',
-  '<i class="fa fa-safari"></i>',
-  '<i class="fa fa-edge"></i>',
-  '<i class="fa fa-stack-overflow"></i>',
-  '<i class="fa fa-github"></i>'
+  '<i class="fa fa-chrome"></i>',
+  '<i class="fa fa-chrome"></i>',
+  '<i class="fa fa-chrome"></i>'
 ];
-// let signList = [
-//   '<i class="fa fa-firefox"></i>',
-//   '<i class="fa fa-firefox"></i>',
-//   '<i class="fa fa-firefox"></i>',
-//   '<i class="fa fa-firefox"></i>',
-//   '<i class="fa fa-firefox"></i>',
-//   '<i class="fa fa-firefox"></i>',
-//   '<i class="fa fa-firefox"></i>',
-//   '<i class="fa fa-firefox"></i>'
-// ];
 let matchMode = false;
 
 /**
@@ -55,7 +55,7 @@ function shuffle(array) {
 function init() {
   let signArray = shuffle(createSignArray(signList));
   $('.card').each(function(index) {
-    $(this).removeClass('card--status-matched card--status-revealed card--animation-reveal card--animation-match card--animation-unmatch card--flag-active');
+    $(this).removeClass('card--flag-matched card--animation-reveal card--animation-match card--animation-unmatch card--flag-active');
     $(this).html(signArray[index]);
   });
 }
@@ -66,7 +66,7 @@ function init() {
  * @return {boolean}
  */
 function isEnabled(obj) {
-  let disabled = matchMode || obj.hasClass('card--status-revealed') || obj.hasClass('card--status-matched');
+  let disabled = matchMode || obj.hasClass('card--flag-matched');
   return !disabled;
 }
 /**
@@ -75,9 +75,6 @@ function isEnabled(obj) {
  */
 function activate(obj) {
   obj.addClass('card--animation-reveal card--flag-active');
-  setTimeout(function() {
-    obj.addClass('card--status-revealed');
-  }, 401);
 }
 
 /**
@@ -92,18 +89,18 @@ function matching(activeCards) {
     if (activeCards.first().html() == activeCards.last().html()) {
       // Match
       activeCards.addClass('card--animation-match');
-      setTimeout(function() {
-        activeCards.addClass('card--status-matched');
-        activeCards.removeClass('card--status-revealed card--animation-reveal card--animation-match card--flag-active');
+      window.setTimeout(function() {
+        activeCards.addClass('card--flag-matched');
+        activeCards.removeClass('card--animation-reveal card--flag-active');
         matchMode = false;
-      }, 601);
+      }, 600);
     } else {
       // Unmatch
       activeCards.addClass('card--animation-unmatch');
-      setTimeout(function() {
-          activeCards.removeClass('card--status-revealed card--animation-reveal card--animation-unmatch card--flag-active');
+      window.setTimeout(function() {
+          activeCards.removeClass('card--animation-reveal card--animation-unmatch card--flag-active');
           matchMode = false;
-      }, 1001);
+      }, 1000);
     }
   }
 }

@@ -73,22 +73,12 @@
           transition: background 0.3s, font-size 0.2s 0.2s;
         }
 
-        .card--status-revealed {
-          font-size: 1.5em;
-          background: #00B3E4;
-        }
-
-        .card--status-matched {
-          font-size: 1.5em;
-          background: #00CDBA;
-        }
-
         .card--animation-reveal {
-          animation: reveal 0.4s;
+          animation: reveal 0.4s forwards;
         }
 
         .card--animation-match {
-          animation: match 0.6s;
+          animation: match 0.6s forwards;
         }
 
         .card--animation-unmatch {
