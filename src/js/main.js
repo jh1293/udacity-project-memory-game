@@ -77,7 +77,7 @@ function activate(obj) {
   obj.addClass('card--animation-reveal card--flag-active');
   setTimeout(function() {
     obj.addClass('card--status-revealed');
-  }, 400);
+  }, 401);
 }
 
 /**
@@ -93,17 +93,17 @@ function matching(activeCards) {
       // Match
       activeCards.addClass('card--animation-match');
       setTimeout(function() {
-        matchMode = false;
         activeCards.addClass('card--status-matched');
         activeCards.removeClass('card--status-revealed card--animation-reveal card--animation-match card--flag-active');
-      }, 600);
+        matchMode = false;
+      }, 601);
     } else {
       // Unmatch
       activeCards.addClass('card--animation-unmatch');
       setTimeout(function() {
-          matchMode = false;
           activeCards.removeClass('card--status-revealed card--animation-reveal card--animation-unmatch card--flag-active');
-      }, 1000);
+          matchMode = false;
+      }, 1001);
     }
   }
 }
