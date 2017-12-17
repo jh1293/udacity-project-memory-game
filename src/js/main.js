@@ -9,26 +9,26 @@
 //   '<i class="fa fa-stack-overflow"></i>',
 //   '<i class="fa fa-github"></i>'
 // ];
-// let signList = [
-//   '<i class="fa fa-firefox"></i>',
-//   '<i class="fa fa-firefox"></i>',
-//   '<i class="fa fa-firefox"></i>',
-//   '<i class="fa fa-firefox"></i>',
-//   '<i class="fa fa-chrome"></i>',
-//   '<i class="fa fa-chrome"></i>',
-//   '<i class="fa fa-chrome"></i>',
-//   '<i class="fa fa-chrome"></i>'
-// ];
 let signList = [
   '<i class="fa fa-firefox"></i>',
   '<i class="fa fa-firefox"></i>',
   '<i class="fa fa-firefox"></i>',
   '<i class="fa fa-firefox"></i>',
-  '<i class="fa fa-firefox"></i>',
-  '<i class="fa fa-firefox"></i>',
-  '<i class="fa fa-firefox"></i>',
-  '<i class="fa fa-firefox"></i>'
+  '<i class="fa fa-chrome"></i>',
+  '<i class="fa fa-chrome"></i>',
+  '<i class="fa fa-chrome"></i>',
+  '<i class="fa fa-chrome"></i>'
 ];
+// let signList = [
+//   '<i class="fa fa-firefox"></i>',
+//   '<i class="fa fa-firefox"></i>',
+//   '<i class="fa fa-firefox"></i>',
+//   '<i class="fa fa-firefox"></i>',
+//   '<i class="fa fa-firefox"></i>',
+//   '<i class="fa fa-firefox"></i>',
+//   '<i class="fa fa-firefox"></i>',
+//   '<i class="fa fa-firefox"></i>'
+// ];
 let matchMode = false;
 
 /**
@@ -60,26 +60,35 @@ function shuffle(array) {
 let playDuration = 29;
 let gameState;
 let matchedNumber = 0;
+let unmatchedNumber = 0;
+let moves = 0;
+let scores = 0;
 let gameClock;
 let tier;
 
 function finishing() {
+  // Assessing stars
   tier = Math.floor(--playDuration / 30);
   if (tier == 0) {
     console.log('Best');
-    $('#board-score').html('<i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i>');
+    $('#summarize-stars').html('<i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i>');
   } else if (tier == 1) {
     console.log('Good');
-    $('#board-score').html('<i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i>');
-
+    $('#summarize-stars').html('<i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i>');
   } else {
     console.log('Keep Practice');
-    $('#board-score').html('<i class="fa fa-star" aria-hidden="true"></i>');
+    $('#summarize-stars').html('<i class="fa fa-star" aria-hidden="true"></i>');
   }
+  // Assessing moves
+  $('#summarize-moves').text(moves);
+  // Assessing scores
+  scores = Math.floor(moves * 180 / playDuration);
+  $('#scores').text(scores);
   $('.board').removeClass('board--hide');
 }
 
 let elemPlayDuration = $('#play-duration');
+let elemMoves = $('#moves');
 
 /** Initializing game. */
 function init() {
@@ -87,10 +96,14 @@ function init() {
   gameState = 20; // State: Keep Running
   playDuration = 0;
   matchedNumber = 0;
+  unmatchedNumber = 0;
+  moves = 0;
+  scores = 0;
   if (gameClock) {
     window.clearInterval(gameClock);
   }
   elemPlayDuration.text('');
+  elemMoves.text('');
 
   // Assgin signs to cards
   let signArray = shuffle(createSignArray(signList)); // Create sign array and shuffle it
@@ -107,6 +120,7 @@ function init() {
          gameState = 30;
        } else {
          elemPlayDuration.text(playDuration++);
+         elemMoves.text(moves);
        }
        break;
      case 30:
@@ -147,6 +161,8 @@ function matching(activeCards) {
       // Match
       matchedNumber++;
       console.log(matchedNumber);
+      moves++;
+      console.log('moves: ' + moves);
       activeCards.addClass('card--animation-match');
       window.setTimeout(function() {
         activeCards.addClass('card--flag-matched');
@@ -155,6 +171,10 @@ function matching(activeCards) {
       }, 600);
     } else {
       // Unmatch
+      unmatchedNumber++;
+      console.log(unmatchedNumber);
+      moves++;
+      console.log('moves: ' + moves);
       activeCards.addClass('card--animation-unmatch');
       window.setTimeout(function() {
           activeCards.removeClass('card--animation-reveal card--animation-unmatch card--flag-active');

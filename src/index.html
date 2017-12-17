@@ -42,7 +42,16 @@
               90 Seconds
             </li>
           </ul>
-          <p><i class="fa fa-clock-o" aria-hidden="true"></i><span id="play-duration"></span>Seconds</p>
+          <p>
+            <i class="fa fa-clock-o" aria-hidden="true"></i>
+            <span class="panel__play-duration" id="play-duration"></span>
+            Seconds
+          </p>
+          <p>
+            <i class="fa fa-clock-o" aria-hidden="true"></i>
+            <span class="panel__moves" id="moves"></span>
+            Moves
+          </p>
         </div>
       </section>
       <main>
@@ -73,10 +82,11 @@
         </div>
       </footer>
     </div>
-    <div class="board board--hide">
+    <div class="board">
       <svg></svg>
-      <span class="board__score" id="board-score">Score</span>
+      <p class="board__score">Scores: <span class="scores" id="scores"></span></p>
       <p class="board__message">Good Job!</p>
+      <p class="board__summarize">Completed with <span id="summarize-moves"></span> moves and <span id="summarize-stars"></span> Stars.</p>
       <div>
         <button class="btn__replay" id="btn-replay">Replay</button>
         <button class="btn__log" id="btn-log">Log</button>
