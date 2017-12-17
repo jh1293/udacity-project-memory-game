@@ -9,26 +9,26 @@
 //   '<i class="fa fa-stack-overflow"></i>',
 //   '<i class="fa fa-github"></i>'
 // ];
-let signList = [
-  '<i class="fa fa-firefox"></i>',
-  '<i class="fa fa-firefox"></i>',
-  '<i class="fa fa-firefox"></i>',
-  '<i class="fa fa-firefox"></i>',
-  '<i class="fa fa-chrome"></i>',
-  '<i class="fa fa-chrome"></i>',
-  '<i class="fa fa-chrome"></i>',
-  '<i class="fa fa-chrome"></i>'
-];
 // let signList = [
 //   '<i class="fa fa-firefox"></i>',
 //   '<i class="fa fa-firefox"></i>',
 //   '<i class="fa fa-firefox"></i>',
 //   '<i class="fa fa-firefox"></i>',
-//   '<i class="fa fa-firefox"></i>',
-//   '<i class="fa fa-firefox"></i>',
-//   '<i class="fa fa-firefox"></i>',
-//   '<i class="fa fa-firefox"></i>'
+//   '<i class="fa fa-chrome"></i>',
+//   '<i class="fa fa-chrome"></i>',
+//   '<i class="fa fa-chrome"></i>',
+//   '<i class="fa fa-chrome"></i>'
 // ];
+let signList = [
+  '<i class="fa fa-firefox"></i>',
+  '<i class="fa fa-firefox"></i>',
+  '<i class="fa fa-firefox"></i>',
+  '<i class="fa fa-firefox"></i>',
+  '<i class="fa fa-firefox"></i>',
+  '<i class="fa fa-firefox"></i>',
+  '<i class="fa fa-firefox"></i>',
+  '<i class="fa fa-firefox"></i>'
+];
 let matchMode = false;
 
 /**
@@ -55,6 +55,36 @@ function shuffle(array) {
     }
     return array;
 }
+
+
+
+function setCookie(cname, cvalue, exdays) {
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+    var expires = "expires="+d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for(var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
+
+function deleteCookie(cname) {
+  document.cookie = cname + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+}
+
+
 
 // Game State: 10 - Standby; 20 - running; 30 - Game Over
 let playDuration = 29;
@@ -85,7 +115,65 @@ function finishing() {
   scores = Math.floor(moves * 180 / playDuration);
   $('#scores').text(scores);
   $('.board').removeClass('board--hide');
+  $('.board__slide').removeClass('board__slide--animation-slidetoleft board__slide--animation-slidetoorigin');
 }
+
+let rank = [];
+
+// let rank = [['Jeff', 855], ['Jeff', 1552], ['Jeff', 496]];
+
+function addToRank() {
+  rank.push([name, scores]);
+}
+
+function ranking() {
+  rank.sort(function(a, b) {
+    return b[1] - a[1];
+  });
+  rank.splice(10, rank.length - 10);
+}
+
+function saveRank() {
+  let rowRankString = [];
+  for (let pairs of rank) {
+    rowRankString.push(pairs.join('@'));
+  }
+  rowRankString = rowRankString.join('&');
+  setCookie('rank', rowRankString, 7)
+}
+
+function loadRank() {
+  let resolvedRankString = [];
+  let rowRankString = getCookie('rank');
+  if (rowRankString) {
+    rowRankString = rowRankString.split('&')
+    for (let pairs of rowRankString) {
+      pairs = pairs.split('@');
+      resolvedRankString.push(pairs);
+    }
+    rank = resolvedRankString;
+  }
+}
+
+function resetRank() {
+  rank = [];
+  $('#rankboard').empty();
+  deleteCookie('rank');
+}
+
+function refreshRankBoard() {
+  let hasCookie = getCookie('rank');
+  if (hasCookie) {
+    $('#rankboard').empty();
+    let i = 1;
+    for (let entry of rank) {
+      $('#rankboard').append(`<li class="rankboard__entry"><span class="rankboard__rank">${i++}</span><span class="rankboard__name">${entry[0]}</span><span class="rankboard__scores">${entry[1]}</span>Points</li>`);
+    }
+  }
+}
+
+
+
 
 let elemPlayDuration = $('#play-duration');
 let elemMoves = $('#moves');
@@ -187,6 +275,8 @@ function matching(activeCards) {
 /** Document ready click event. */
 $(document).ready(function() {
   // init();
+  loadRank();
+  refreshRankBoard();
 });
 
 /** Start Game <button> click event. */
@@ -204,8 +294,40 @@ $('.card').click(function() {
   }
 });
 
-/** Start Game <button> click event. */
+/** Replay <button> click event. */
 $('#btn-replay').click(function() {
   init();
+  $('.board__slide').removeClass('board__slide--animation-slidetoleft board__slide--animation-slidetoorigin');
   $('.board').addClass('board--hide');
+});
+
+/** Log <button> click event. */
+$('#btn-log').click(function() {
+  $('.board__slide').removeClass('board__slide--animation-slidetoleft board__slide--animation-slidetoorigin');
+  $('.board__slide').addClass('board__slide--animation-slidetoleft');
+});
+
+$('#btn-return').click(function() {
+  $('.board__slide').removeClass('board__slide--animation-slidetoleft board__slide--animation-slidetoorigin');
+  $('.board__slide').addClass('board__slide--animation-slidetoorigin');
+});
+
+let name = '';
+
+$('#btn-confirm').click(function() {
+  name = $('#ipt-name').val();
+  if (name) {
+    console.log(name);
+    addToRank();
+    ranking();
+    saveRank();
+    refreshRankBoard();
+    $('.board').addClass('board--hide');
+  } else {
+    console.log('empty!');
+  }
+});
+
+$('#btn-resetrank').click(function() {
+  resetRank();
 });

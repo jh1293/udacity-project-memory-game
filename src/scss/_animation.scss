@@ -5,6 +5,7 @@
     background: #2f3c4a;
   }
   50% {
+    transform: rotateY(90deg);
     font-size: 0;
     background: #2f3c4a;
   }
@@ -80,5 +81,23 @@
     transform: rotateY(0deg);
     font-size: 0;
     background: #2f3c4a;
+  }
+}
+
+@keyframes slidetoleft {
+  from {
+    transform: translate3d(0,0,0);
+  }
+  to {
+    transform: translate3d(-50%,0,0);
+  }
+}
+
+@keyframes slidetoorigin {
+  from {
+    transform: translate3d(-50%,0,0);
+  }
+  to {
+    transform: translate3d(0%,0,0);
   }
 }
