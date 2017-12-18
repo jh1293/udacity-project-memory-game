@@ -87,27 +87,28 @@ function deleteCookie(cname) {
 
 
 // Game State: 10 - Standby; 20 - running; 30 - Game Over
-let playDuration = 29;
-let gameState;
+let playDuration;
+let clockState;
 let matchedNumber = 0;
 let unmatchedNumber = 0;
 let moves = 0;
 let scores = 0;
-let gameClock;
+let clock;
 let tier;
 
 function finishing() {
   // Assessing stars
   tier = Math.floor(--playDuration / 30);
+  let elemSummarizeStars = $('#summarize-stars');
   if (tier == 0) {
     console.log('Best');
-    $('#summarize-stars').html('<i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i>');
+    elemSummarizeStars.html('<i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i>');
   } else if (tier == 1) {
     console.log('Good');
-    $('#summarize-stars').html('<i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i>');
+    elemSummarizeStars.html('<i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i>');
   } else {
     console.log('Keep Practice');
-    $('#summarize-stars').html('<i class="fa fa-star" aria-hidden="true"></i>');
+    elemSummarizeStars.html('<i class="fa fa-star" aria-hidden="true"></i>');
   }
   // Assessing moves
   $('#summarize-moves').text(moves);
@@ -179,17 +180,14 @@ let elemPlayDuration = $('#play-duration');
 let elemMoves = $('#moves');
 
 /** Initializing game. */
-function init() {
+function initGame() {
+
   // Initialize game logic related variables
-  gameState = 20; // State: Keep Running
   playDuration = 0;
   matchedNumber = 0;
   unmatchedNumber = 0;
   moves = 0;
   scores = 0;
-  if (gameClock) {
-    window.clearInterval(gameClock);
-  }
   elemPlayDuration.text('');
   elemMoves.text('');
 
@@ -199,24 +197,49 @@ function init() {
     $(this).removeClass('card--flag-matched card--animation-reveal card--animation-match card--animation-unmatch card--flag-active'); // Iterate DOM by .card, remove all other classes
     $(this).html(signArray[index]); // Iterate DOM by .card, replace its content with sign accordingly
   });
+}
 
-  // Start main loop
-  gameClock = window.setInterval(function() {
-   switch (gameState) {
-     case 20:
-       if (matchedNumber == 8) {
-         gameState = 30;
-       } else {
-         elemPlayDuration.text(playDuration++);
-         elemMoves.text(moves);
-       }
-       break;
-     case 30:
-       window.clearInterval(gameClock);
-       finishing();
-       break;
-    }
-  }, 1000);
+function startGame() {
+  clockState = 20;
+}
+
+function pauseGame() {
+  clockState = 0;
+}
+
+function resumeGame() {
+  clockState = 20;
+}
+
+function saveGame() {
+  pauseGame();
+  let cardsData = '';
+  $('.card').each(function() {
+    cardsData += $(this).attr('class') + '@' + $(this).html() + '@@';
+  });
+  localStorage.setItem('cardsData', cardsData);
+  localStorage.setItem('clockState', clockState);
+  localStorage.setItem('playDuration', playDuration);
+  localStorage.setItem('moves', moves);
+  resumeGame();
+}
+
+function loadGame() {
+  pauseGame();
+  let cardsData = localStorage.getItem('cardsData');
+  cardsData = cardsData.split('@@');
+  cardsData.forEach(function(value, index) {
+    cardsData[index] = value.split('@')
+  });
+  $('.card').each(function(index) {
+    $(this).removeClass('card');
+    $(this).addClass(cardsData[index][0]);
+    $(this).html(cardsData[index][1]);
+  });
+  clockState = Number(localStorage.getItem('clockState'));
+  playDuration = Number(localStorage.getItem('playDuration'));
+  moves = Number(localStorage.getItem('moves'));
+  resumeGame();
 }
 
 /**
@@ -272,16 +295,43 @@ function matching(activeCards) {
   }
 }
 
-/** Document ready click event. */
+function refreshStatus() {
+  elemPlayDuration.text(playDuration++);
+  elemMoves.text(moves);
+}
+
+/** Document ready event. */
 $(document).ready(function() {
-  // init();
+
+  // Set clock
+  clock = window.setInterval(function() {
+   switch (clockState) {
+     case 0: break;
+     case 20:
+      refreshStatus();
+      break;
+    }
+  }, 1000);
+
+  // Load and refresh rank board
   loadRank();
   refreshRankBoard();
 });
 
 /** Start Game <button> click event. */
 $('#btn-start').click(function() {
-  init();
+  initGame();
+  startGame();
+});
+
+/** Save Game <button> click event. */
+$('#btn-save').click(function() {
+  saveGame();
+});
+
+/** Laod Game <button> click event. */
+$('#btn-load').click(function() {
+  loadGame();
 });
 
 /** Card <li> click event. */
@@ -289,14 +339,20 @@ $('.card').click(function() {
   if (
     isEnabled($(this))
   ) {
-  activate($(this));
-  matching($('.card--flag-active'));
+    activate($(this));
+    matching($('.card--flag-active'));
+    setTimeout(function() {
+      if ($('.card--flag-matched').length == 16) {
+        pauseGame();
+        finishing();
+      }
+    }, 600);
   }
 });
 
 /** Replay <button> click event. */
 $('#btn-replay').click(function() {
-  init();
+  initGame();
   $('.board__slide').removeClass('board__slide--animation-slidetoleft board__slide--animation-slidetoorigin');
   $('.board').addClass('board--hide');
 });
