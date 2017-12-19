@@ -3,22 +3,41 @@
 @import 'general';
 @import 'animation';
 
+html {
+  height: 100%;
+}
+
+body {
+  height: 100%;
+  overflow: hidden;
+}
+
 .container {
   display: flex;
+  height: 100%;
 
   header {
-    background: #333;
+    background: #abdce8;
 
     .header {
       display: flex;
       justify-content: center;
       align-items: center;
 
+      .btn__rank {
+        display: none;
+        position: absolute;
+        left: 32px;
+      }
+
       &__logo {
-        color: white;
+        color: #fff;
+        font-size: 1.5em;
+        margin: 0 1em;
       }
 
       &__title {
+        color: #fff;
 
       }
     }
@@ -26,33 +45,65 @@
 
   section {
     background: #fff;
+  }
 
-    .panel {
+  aside {
+    background: #F9FAFB;
+    display: flex;
 
-      .btn__start {
-        width: 128px;
-        height: 32px;
-        border-radius: 6px;
-        font: 1em/1.5 Arial;
-        color: white;
-        background: #06c9be;
-        transition: box-shadow 0.3s;
+    .rank {
+      display: flex;
+      background: #fff;
+
+      .rank__bar {
+        display: none;
+      }
+      .rank__head {
+        display: flex;
       }
 
-      .btn__start:hover {
-        box-shadow: 0 2px 5px 2px #bbb;
-      }
+      .rank__body {
 
-      .btn__start:active {
-        box-shadow: 0 0 3px 1px #bbb;
+        .rankboard {
+          display: flex;
+
+          &__empty-info {
+            border-radius: 3px;
+            margin: 6px 0;
+            font: italic 1em/1.2 Coda;
+            text-align: center;
+            color: #888;
+          }
+
+          &__entry {
+            border-radius: 3px;
+            text-align: center;
+            transition: background 0.2s;
+
+
+            .rankboard__rank,
+            .rankboard__name,
+            .rankboard__scores {
+              display: inline-block;
+              text-align: center;
+            }
+          }
+
+          &__entry:hover {
+            background: #eee;
+          }
+        }
       }
     }
   }
 
   main {
-    background: #eee;
+    background: url(../img/bg_geometry.png);
 
     .game {
+      display: flex;
+      justify-content: center;
+      align-items: center;
 
       .table {
         display: flex;
@@ -70,7 +121,6 @@
           font-size: 0;
           background: #2f3c4a;
           color: white;
-          transition: background 0.3s, font-size 0.2s 0.2s;
         }
 
         .card--animation-reveal {
@@ -87,16 +137,6 @@
       }
     }
   }
-
-  footer {
-    width: 100%;
-    padding: 1em;
-    background: #ddd;
-
-    .footer {
-
-    }
-  }
 }
 
 .board {
@@ -106,8 +146,8 @@
   overflow: hidden;
   width: 100%;
   height: 100%;
-  background: white;
-  color: black;
+  background: #fff;
+  color: #333;
   font-size: 2em;
   transition: all 0.5s;
 
@@ -123,59 +163,74 @@
     height: 100%;
 
     .board__results {
-      background: #ddd;
       display: flex;
       flex-flow: column wrap;
       align-items: center;
       justify-content: center;
       width: 50%;
       height: 100%;
+      background: #fff;
 
-      .btn__replay {
-        width: 128px;
-        height: 32px;
-        border-radius: 6px;
-        font: 0.5em/1.5 Arial;
-        color: white;
-        background: #06c9be;
-        transition: box-shadow 0.3s;
+      .board__stars {
+        margin: 0.5em 0;
+        color: #ffca00;
+
+        i {
+          font-size: 2em;
+          margin: 0 6px;
+        }
       }
 
-      .btn__replay:hover {
-        box-shadow: 0 2px 5px 2px #bbb;
+      .board__score,
+      .board__score span,
+      .board__message,
+      .board__message span,
+      .board__summarize,
+      .board__summarize span {
+        font: 24px/1.5 Coda;
       }
 
-      .btn__replay:active {
-        box-shadow: 0 0 3px 1px #bbb;
+      .board__summarize {
+        color: #888;
+        font: 16px/1.5 Coda;
       }
 
-      .btn__log {
-        width: 128px;
-        height: 32px;
-        border-radius: 6px;
-        font: 0.5em/1.5 Arial;
-        color: #333;
-        background: #eee;
-        transition: box-shadow 0.3s;
+      .board__summarize span {
+        color: #888;
+        font: 16px/1.5 Coda;
       }
 
-      .btn__log:hover {
-        box-shadow: 0 2px 5px 2px #bbb;
-      }
-
-      .btn__log:active {
-        box-shadow: 0 0 3px 1px #bbb;
+      .btn {
+        margin: 1em 1.5em;
       }
     }
 
     .board__log {
-      background: #eee;
       display: flex;
       flex-flow: column wrap;
       align-items: center;
       justify-content: center;
       width: 50%;
       height: 100%;
+      background: #fff;
+
+      p {
+        color: #888;
+        font: 24px/1.5 Coda;
+      }
+
+      .ipt__text {
+        margin: 1em 0;
+      }
+
+      .btn__direction {
+        position: absolute;
+        left: 52%;
+      }
+
+      .btn__form {
+        margin: 0.5em 0;
+      }
     }
   }
 
@@ -192,25 +247,176 @@
   display: none;
 }
 
-@media screen and (max-width: 425px) {
+@media screen and (max-width: 426px) {
   .container {
-    flex-flow: column wrap;
+    flex-flow: column nowrap;
 
     header {
+      flex: 1 1 20%;
       order: 1;
+      width: 100%;
+
+      .header {
+        width: 100%;
+        height: 100%;
+
+        .btn__rank {
+          display: block;
+          top: -36px;
+          left: -36px;
+        }
+
+        &__logo {
+          display: none;
+        }
+      }
     }
 
     section {
+      flex: 1 1 20%;
+      order: 3;
+      width: 100%;
+      border-top: 1px solid #eee;
+
+      .panel {
+        display: flex;
+        flex-flow: column nowrap;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+
+        &__buttons {
+          display: flex;
+          flex-flow: row nowrap;
+          justify-content: space-around;
+          align-items: center;
+          flex: 1 1 50%;
+          order: 2;
+          width: 100%;
+        }
+
+        &__counters {
+          display: flex;
+          flex-flow: row nowrap;
+          justify-content: space-around;
+          align-items: center;
+          flex: 1 1 50%;
+          order: 1;
+          width: 100%;
+          padding: 0 16px;
+
+          .counter {
+            display: flex;
+            flex-flow: row nowrap;
+            justify-content: space-around;
+            align-items: center;
+            width: 50%;
+            height: 100%;
+            padding: 0 16px;
+          }
+
+          .counter__time {
+
+          }
+
+          .counter__moves {
+
+          }
+          span {
+            width: 40px;
+            text-align: left;
+          }
+
+          .play-duration,
+          .moves {
+            width: 32px;
+            text-align: right;
+          }
+        }
+      }
+    }
+
+    aside {
+      display: none;
+      flex-flow: column nowrap;
+      justify-content: center;
+      align-items: center;
       order: 2;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: none;
+
+      .rank {
+        flex-flow: column wrap;
+        justify-content: center;
+        align-items: center;
+        width: 90%;
+        padding: 1em;
+        border-radius: 12px;
+        box-shadow: 0 3px 20px 0 rgba(0,0,0,0.5);
+
+        .rank__bar {
+          display: flex;
+          flex-flow: row nowrap;
+          justify-content: flex-end;
+          align-items: flex-end;
+          align-content: flex-end;
+          width: 100%;
+        }
+
+        .rank__head {
+          flex-flow: row nowrap;
+          justify-content: center;
+          align-items: center;
+          height: 32px;
+
+          .rank-heading {
+            flex: 1 1 50%;
+            font-size: 20px;
+            line-height: 32px;
+          }
+        }
+
+        .rank__body {
+          margin: 8px 0;
+
+          .rankboard {
+            flex-flow: column wrap;
+
+            &__entry {
+              width: 200px;
+              height: 28px;
+
+              .rankboard__rank {
+                width: 16px;
+                line-height: 28px;
+              }
+
+              .rankboard__name {
+                width: 144px;
+                line-height: 28px;
+              }
+
+              .rankboard__scores {
+                width: 40px;
+                line-height: 28px;
+              }
+            }
+          }
+        }
+      }
     }
 
     main {
-      order: 3;
-      width: 100%;
-      padding: 10px;
-      margin: 0 auto;
+      flex: 1 1 60%;
+      order: 2;
+      width: 100;
 
       .game {
+        width: 100%;
+        height: 100%;
 
         .table {
           width: 290px;
@@ -227,31 +433,170 @@
         }
       }
     }
-
-    footer {
-      order: 4;
-    }
   }
 }
 
 @media screen and (min-width: 426px) and (max-width: 768px) {
   .container {
-    flex-flow: column wrap;
+    flex-flow: column nowrap;
 
     header {
+      flex: 1 1 10%;
       order: 1;
+      width: 100%;
+
+      .header {
+        width: 100%;
+        height: 100%;
+
+        .btn__rank {
+          display: block;
+        }
+      }
     }
 
     section {
+      flex: 1 1 10%;
+      order: 3;
+      width: 100%;
+      border-top: 1px solid #eee;
+
+      .panel {
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+
+        &__buttons {
+          display: flex;
+          flex-flow: row nowrap;
+          justify-content: space-around;
+          align-items: center;
+          width: 40%;
+          // margin: 0 36px;
+        }
+
+        &__counters {
+          display: flex;
+          flex-flow: row nowrap;
+          justify-content: space-around;
+          align-items: center;
+          width: 60%;
+          // margin: 0 30px;
+
+          .counter {
+            display: flex;
+            flex-flow: row nowrap;
+            justify-content: space-around;
+            align-items: center;
+            width: 120px;
+            height: 40px;
+            // margin: 0 30px;
+          }
+
+          .counter__time {
+
+          }
+
+          .counter__moves {
+
+          }
+          span {
+            width: 50px;
+            text-align: left;
+          }
+
+          .play-duration,
+          .moves {
+            width: 32px;
+            text-align: right;
+          }
+        }
+      }
+    }
+
+    aside {
+      display: none;
+      flex-flow: column nowrap;
+      justify-content: center;
+      align-items: center;
       order: 2;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: none;
+
+      .rank {
+        flex-flow: column wrap;
+        justify-content: center;
+        align-items: center;
+        width: 50%;
+        padding: 1em;
+        border-radius: 12px;
+        box-shadow: 0 3px 20px 0 rgba(0,0,0,0.5);
+
+        .rank__bar {
+          display: flex;
+          flex-flow: row nowrap;
+          justify-content: flex-end;
+          align-items: flex-end;
+          align-content: flex-end;
+          width: 100%;
+        }
+
+        .rank__head {
+          flex-flow: row nowrap;
+          justify-content: center;
+          align-items: center;
+          height: 32px;
+
+          .rank-heading {
+            flex: 1 1 50%;
+            font-size: 20px;
+            line-height: 32px;
+          }
+        }
+
+        .rank__body {
+          margin: 8px 0;
+
+          .rankboard {
+            flex-flow: column wrap;
+
+            &__entry {
+              width: 200px;
+              height: 28px;
+
+              .rankboard__rank {
+                width: 16px;
+                line-height: 28px;
+              }
+
+              .rankboard__name {
+                width: 144px;
+                line-height: 28px;
+              }
+
+              .rankboard__scores {
+                width: 40px;
+                line-height: 28px;
+              }
+            }
+          }
+        }
+      }
     }
 
     main {
-      order: 3;
-      width: 100%;
-      padding: 1em;
+      flex: 1 1 80%;
+      order: 2;
+      width: 100;
 
       .game {
+        width: 100%;
+        height: 100%;
 
         .table {
           width: 370px;
@@ -268,10 +613,6 @@
         }
       }
     }
-
-    footer {
-      order: 4;
-    }
   }
 }
 
@@ -282,39 +623,157 @@
     header {
       flex: 1 1 100%;
       order: 1;
+      height: 10%;
+
+      .header {
+        height: 100%;
+      }
     }
 
     section {
-      flex: 1 1 25%;
-      order: 2;
-    }
-
-    main {
-      flex: 1 1 75%;
+      flex: 1 1 100%;
       order: 3;
-      padding: 2em;
+      height: 10%;
+      border-top: 1px solid #eee;
 
-      .game {
+      .panel {
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
 
-        .table {
-          width: 500px;
-          padding: 10px;
-          border-radius: 16px;
-          margin: 0 auto;
+        &__buttons {
+          display: flex;
+          flex-flow: row nowrap;
+          justify-content: space-between;
+          align-items: center;
+          width: 180px;
+          margin: 0 36px;
+        }
 
-          .card {
-            width: 100px;
-            height: 100px;
-            margin: 10px;
-            border-radius: 8px;
+        &__counters {
+          display: flex;
+          flex-flow: row nowrap;
+          justify-content: space-between;
+          align-items: center;
+          margin: 0 30px;
+
+          .counter {
+            display: flex;
+            flex-flow: row nowrap;
+            justify-content: space-around;
+            align-items: center;
+            width: 120px;
+            height: 40px;
+            margin: 0 30px;
+          }
+
+          .counter__time {
+
+          }
+
+          .counter__moves {
+
+          }
+          span {
+            width: 50px;
+            text-align: left;
+          }
+
+          .play-duration,
+          .moves {
+            width: 32px;
+            text-align: right;
           }
         }
       }
     }
 
-    footer {
-      flex: 1 1 100%;
-      order: 4;
+    aside {
+      flex-flow: column nowrap;
+      justify-content: center;
+      align-items: center;
+      flex: 1 1 35%;
+      order: 2;
+      height: 80%;
+
+      .rank {
+        flex-flow: column wrap;
+        justify-content: flex-start;
+        align-items: center;
+        padding: 1em;
+        border-radius: 12px;
+        box-shadow: 0 3px 10px 1px #ddd;
+
+        .rank__head {
+          flex-flow: row nowrap;
+          justify-content: center;
+          align-items: center;
+          height: 32px;
+
+          .rank-heading {
+            flex: 1 1 50%;
+            font-size: 20px;
+            line-height: 32px;
+          }
+        }
+
+        .rank__body {
+          margin: 8px 0;
+
+          .rankboard {
+            flex-flow: column wrap;
+
+            &__entry {
+              width: 200px;
+              height: 28px;
+
+              .rankboard__rank {
+                width: 16px;
+                line-height: 28px;
+              }
+
+              .rankboard__name {
+                width: 144px;
+                line-height: 28px;
+              }
+
+              .rankboard__scores {
+                width: 40px;
+                line-height: 28px;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    main {
+      flex: 1 1 65%;
+      order: 2;
+      height: 80%;
+
+      .game {
+        width: 100%;
+        height: 100%;
+
+        .table {
+          width: 500px;
+          height: 500px;
+          padding: 10px;
+          border-radius: 12px;
+          margin: 0 auto;
+          box-shadow: 5px 5px 10px 3px #ccc;
+
+          .card {
+            width: 100px;
+            height: 100px;
+            margin: 10px;
+            border-radius: 6px;
+          }
+        }
+      }
     }
   }
 }
@@ -324,41 +783,163 @@
     flex-flow: row wrap;
 
     header {
-      flex: 1 1 15%;
+      flex: 1 1 100%;
       order: 1;
+      height: 10%;
+
+      .header {
+        height: 100%;
+      }
     }
 
     section {
-      flex: 1 1 15%;
+      flex: 1 1 25%;
+      order: 2;
+      display: flex;
+      flex-flow: column wrap;
+      justify-content: center;
+      align-items: center;
+      height: 90%;
+      border-right: 1px solid #eee;
+
+
+      .panel {
+        display: flex;
+        flex-flow: column wrap;
+        justify-content: center;
+        align-items: center;
+        height: 70%;
+
+        &__buttons {
+          display: flex;
+          flex-flow: column nowrap;
+          justify-content: space-around;
+          align-items: center;
+          flex: 1 1 70%;
+          width: 100%;
+        }
+
+        &__counters {
+          display: flex;
+          flex-flow: column nowrap;
+          justify-content: space-around;
+          align-items: center;
+          flex: 1 1 30%;
+          width: 100%;
+
+          .counter {
+            display: flex;
+            flex-flow: row nowrap;
+            justify-content: space-around;
+            align-items: center;
+            width: 120px;
+            height: 40px;
+          }
+
+          .counter__time {
+
+          }
+
+          .counter__moves {
+
+          }
+          span {
+            width: 50px;
+            text-align: left;
+          }
+
+          .play-duration,
+          .moves {
+            width: 32px;
+            text-align: right;
+          }
+        }
+      }
+    }
+
+    aside {
+      flex-flow: column nowrap;
+      justify-content: center;
+      align-items: center;
+      flex: 1 1 25%;
       order: 3;
+      height: 90%;
+
+      .rank {
+        flex-flow: column wrap;
+        justify-content: flex-start;
+        align-items: center;
+        padding: 1em;
+        border-radius: 12px;
+        box-shadow: 0 3px 10px 1px #ddd;
+
+        .rank__head {
+          flex-flow: row nowrap;
+          justify-content: center;
+          align-items: center;
+          height: 32px;
+
+          .rank-heading {
+            flex: 1 1 50%;
+            font-size: 20px;
+            line-height: 32px;
+          }
+        }
+
+        .rank__body {
+          margin: 8px 0;
+
+          .rankboard {
+            flex-flow: column wrap;
+
+            &__entry {
+              width: 200px;
+              height: 28px;
+
+              .rankboard__rank {
+                width: 16px;
+                line-height: 28px;
+              }
+
+              .rankboard__name {
+                width: 144px;
+                line-height: 28px;
+              }
+
+              .rankboard__scores {
+                width: 40px;
+                line-height: 28px;
+              }
+            }
+          }
+        }
+      }
     }
 
     main {
       flex: 1 1 50%;
       order: 2;
-      padding: 2em;
+      height: 90%;
 
       .game {
+        width: 100%;
+        height: 100%;
 
         .table {
           width: 500px;
+          height: 500px;
           padding: 10px;
-          border-radius: 16px;
+          border-radius: 12px;
           margin: 0 auto;
 
           .card {
             width: 100px;
             height: 100px;
             margin: 10px;
-            border-radius: 8px;
+            border-radius: 6px;
           }
         }
       }
-    }
-
-    footer {
-      flex: 1 1 100%;
-      order: 4;
     }
   }
 }

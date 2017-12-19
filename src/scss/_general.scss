@@ -1,4 +1,229 @@
-h1 {
-  color: pink;
-  font: 2em/1.5 Arial;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+span,
+button {
+  font-weight: 100;
+  font-family: Coda;
+}
+
+.btn {
+  color: #fff;
+
+  &__control {
+    width: 48px;
+    height: 48px;
+    border-radius: 24px;
+    font-size: 1em;
+    transition: box-shadow 0.2s;
+  }
+
+  &__control:hover {
+    box-shadow: 0 0 7px 2px #ccc;
+  }
+
+  &__control:active {
+    box-shadow: 0 0 3px 1px #ccc;
+  }
+
+  &__control--color-red {
+    background: #FF625A;
+  }
+
+  &__control--color-yellow {
+    background: #FFBE2F;
+  }
+
+  &__control--color-green {
+    background: #29D042;
+  }
+
+  &__misc {
+    background: #ccc;
+    transition: background 0.2s;
+  }
+
+  &__misc:hover {
+    background: #aaa;
+  }
+
+  &__rank {
+    font-size: 1.5em;
+    background: none;
+    transition: color 0.2s;
+  }
+
+  &__rank:hover {
+    color: #4bb9d3;
+  }
+
+  &__close {
+    color: #ccc;
+    background: none;
+    transition: color 0.2s;
+  }
+
+  &__close:hover {
+    color: #aaa;
+  }
+}
+
+.btn:hover {
+  cursor: pointer;
+}
+
+.btn__board {
+  width: 64px;
+  height: 64px;
+  border-radius: 32px;
+  font: 0.6em/1.5 Arial;
+  transition: box-shadow 0.3s;
+}
+
+.btn__board:hover {
+  box-shadow: 0 0 7px 2px #ccc;
+}
+
+.btn__board:active {
+  box-shadow: 0 0 3px 1px #ccc;
+}
+
+.btn__board--color-cyan {
+  background: #06c9be;
+}
+
+.btn__board--color-purple {
+  background: #a482ce;
+}
+
+.btn__direction {
+  width: 32px;
+  height: 64px;
+  color: #888;
+  background: none;
+  animation: backbutton 3s ease-in-out infinite;
+
+  i {
+    font-size: 2em;
+    transform: scaleY(1.5);
+  }
+}
+
+.btn__form {
+  width: 128px;
+  height: 32px;
+  border-radius: 12px;
+  transition: box-shadow 0.3s;
+}
+
+.btn__form:hover {
+  box-shadow: 0 3px 10px 2px #bbb;
+}
+
+.btn__form:active {
+  box-shadow: 0 0 3px 1px #bbb;
+}
+
+.btn__form--color-grey {
+  background: #5d5d5d;
+}
+
+.ipt__text {
+  width: 256px;
+  height: 48px;
+  padding: 3px 6px;
+  border: none;
+  border-bottom: 2px solid #aaa;
+  font: 28px/48px Coda;
+  text-align: center;
+  transition: border-bottom, 0.5s;
+}
+
+.ipt__text:focus {
+  outline: none;
+  border-bottom: 2px solid #0690c9;
+}
+
+@media screen and (max-width: 425px) {
+  .btn__control {
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+    font-size: 1em;
+    transition: box-shadow 0.2s;
+  }
+
+  .btn__rank {
+    width: 72px;
+    height: 72px;
+    padding-top: 32px;
+    padding-left: 30px;
+    border-radius: 20px;
+    font-size: 1.2em;
+    background: #89cbdc;
+  }
+
+  .btn__misc {
+    width: 48px;
+    height: 20px;
+    border-radius: 10px;
+    font-size: 12px;
+    line-height: 20px;
+  }
+}
+
+@media screen and (min-width: 426px) and (max-width: 768px) {
+  .btn__control {
+    width: 36px;
+    height: 36px;
+    border-radius: 18px;
+    font-size: 0.8em;
+  }
+
+  .btn__misc {
+    width: 48px;
+    height: 20px;
+    border-radius: 10px;
+    font-size: 12px;
+    line-height: 20px;
+  }
+}
+
+@media screen and (min-width: 769px) and (max-width: 1024px) {
+
+  .btn__control {
+    width: 36px;
+    height: 36px;
+    border-radius: 18px;
+    font-size: 0.8em;
+  }
+
+  .btn__misc {
+    width: 48px;
+    height: 20px;
+    border-radius: 10px;
+    font-size: 12px;
+    line-height: 20px;
+  }
+}
+
+@media screen and (min-width: 1025px) {
+  .btn__control {
+    width: 48px;
+    height: 48px;
+    border-radius: 24px;
+    font-size: 1.2em;
+  }
+
+  .btn__misc {
+    width: 48px;
+    height: 20px;
+    border-radius: 10px;
+    font-size: 12px;
+    line-height: 20px;
+  }
 }

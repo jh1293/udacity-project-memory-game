@@ -5,68 +5,71 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Memory Game</title>
+    <title>Browser Tags</title>
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet prefetch" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
     <link rel="stylesheet prefetch" href="https://fonts.googleapis.com/css?family=Coda">
+    <link rel="shortcut icon" type="image/png" href="img/favicon.png"/>
   </head>
   <body>
     <div class="container">
       <header>
         <div class="header">
+          <button class="btn btn__rank" id="btn-rank">
+            <i class="fa fa-users" aria-hidden="true"></i>
+          </button>
           <span class="header__logo">
-            <i class="fa fa-envira" aria-hidden="true"></i>
+            <i class="fa fa-tags" aria-hidden="true"></i>
           </span>
-          <h1 class="header__title">Memory Game</h1>
+          <h1 class="header__title">Browser Tags</h1>
         </div>
       </header>
       <section>
         <div class="panel">
-          <button class="btn__start" id="btn-start">
-            <i class="fa fa-repeat" aria-hidden="true"></i>
-          </button>
-          <button class="btn__save" id="btn-save">
-            Save Game
-          </button>
-          <button class="btn__load" id="btn-load">
-            Load Game
-          </button>
-          <ul>
-            <li>
-              <i class="fa fa-star" aria-hidden="true"></i>
-              <i class="fa fa-star" aria-hidden="true"></i>
-              <i class="fa fa-star" aria-hidden="true"></i>
-              30 Seconds
-            </li>
-            <li>
-              <i class="fa fa-star" aria-hidden="true"></i>
-              <i class="fa fa-star" aria-hidden="true"></i>
-              60 Seconds
-            </li>
-            <li>
-              <i class="fa fa-star" aria-hidden="true"></i>
-              90 Seconds
-            </li>
-          </ul>
-          <p>
-            <i class="fa fa-clock-o" aria-hidden="true"></i>
-            <span class="panel__play-duration" id="play-duration"></span>
-            Seconds
-          </p>
-          <p>
-            <i class="fa fa-clock-o" aria-hidden="true"></i>
-            <span class="panel__moves" id="moves"></span>
-            Moves
-          </p>
-          <div class="panel__rankboard">
-            <h3 class="rankboard__title">Rank</h3>
-            <button class="btn__resetrank" id="btn-resetrank">Reset</button>
-            <ul class="rankboard" id="rankboard">
-              <!-- <li class="rankboard__entry"><span class="rankboard__rank">1</span><span class="rankboard__name">Jeff</span><span class="rankboard__scores">196</span>Points</li> -->
-            </ul>
+          <div class="panel__buttons">
+            <button class="btn btn__control btn__control--color-red" id="btn-start">
+              <i class="fa fa-refresh" aria-hidden="true"></i>
+            </button>
+            <button class="btn btn__control btn__control--color-yellow" id="btn-save">
+              <i class="fa fa-floppy-o" aria-hidden="true"></i>
+            </button>
+            <button class="btn btn__control btn__control--color-green" id="btn-load">
+              <i class="fa fa-folder-open-o" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="panel__counters">
+            <div class="counter counter__time">
+              <i class="fa fa-clock-o" aria-hidden="true"></i>
+              <span>Time</span>
+              <span class="play-duration" id="play-duration">--</span>
+            </div>
+            <div class="counter counter__moves">
+              <i class="fa fa-clock-o" aria-hidden="true"></i>
+              <span>Moves</span>
+              <span class="moves" id="moves">--</span>
+            </div>
           </div>
         </div>
       </section>
+      <aside>
+        <div class="rank">
+          <div class="rank__bar">
+            <button class="btn btn__close" id="btn-close"><i class="fa fa-times" aria-hidden="true"></i></button>
+          </div>
+          <div class="rank__head">
+            <h3 class="rank-heading">Rank</h3>
+          </div>
+          <div class="rank__body">
+            <ul class="rankboard" id="rankboard">
+              <!-- <li class="rankboard__entry"><span class="rankboard__rank">1</span><span class="rankboard__name">Jeff</span><span class="rankboard__scores">196</span>Points</li> -->
+              <!-- <li class="rankboard__entry">Haven't Got Any Rank Yet</li>
+              <li class="rankboard__entry">Go Play Around</li>
+              <li class="rankboard__entry">And Enjoy Yourself</li> -->
+            </ul>
+          </div>
+          <button class="btn btn__misc" id="btn-resetrank"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+        </div>
+      </aside>
       <main>
         <div class="game">
           <ul class="table">
@@ -89,33 +92,27 @@
           </ul>
         </div>
       </main>
-      <footer>
-        <div class="footer">
-          <p>footer</p>
-        </div>
-      </footer>
     </div>
     <div class="board board--hide">
       <div class="board__slide">
         <div class="board__results">
-          <svg></svg>
+          <span class="board__stars" id="board-stars"></span>
           <p class="board__score">Scores: <span class="scores" id="scores"></span></p>
           <p class="board__message">Good Job!</p>
-          <p class="board__summarize">Completed with <span id="summarize-moves"></span> moves and <span id="summarize-stars"></span> Stars.</p>
-          <div>
-            <button class="btn__replay" id="btn-replay">Replay</button>
-            <button class="btn__log" id="btn-log">Log</button>
+          <p class="board__summarize">Completed with <span id="summarize-moves"></span> moves.</p>
+          <div class="board__results-buttons">
+            <button class="btn btn__board btn__board--color-cyan" id="btn-replay"><i class="fa fa-repeat" aria-hidden="true"></i></button>
+            <button class="btn btn__board btn__board--color-purple" id="btn-log"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
           </div>
         </div>
         <div class="board__log">
           <p>Input Your Name:</p>
-          <input type="text" class="ipt__name" id="ipt-name">
-          <button class="btn__return" id="btn-return">Return</button>
-          <button class="btn__confirm" id="btn-confirm">Confirm</button>
+          <input type="text" class="ipt__text" id="ipt-name">
+          <button class="btn btn__direction" id="btn-return"><i class="fa fa-chevron-left" aria-hidden="true"></i></button>
+          <button class="btn btn__form btn__form--color-grey" id="btn-confirm">Confirm</button>
         </div>
       </div>
     </div>
-
     <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
     <script src="js/main.js"></script>
   </body>

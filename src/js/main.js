@@ -99,7 +99,7 @@ let tier;
 function finishing() {
   // Assessing stars
   tier = Math.floor(--playDuration / 30);
-  let elemSummarizeStars = $('#summarize-stars');
+  let elemSummarizeStars = $('#board-stars');
   if (tier == 0) {
     console.log('Best');
     elemSummarizeStars.html('<i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i>');
@@ -157,19 +157,24 @@ function loadRank() {
 }
 
 function resetRank() {
-  rank = [];
-  $('#rankboard').empty();
-  deleteCookie('rank');
+  if (getCookie('rank')) {
+    rank = [];
+    $('#rankboard').empty();
+    deleteCookie('rank');
+    refreshRankBoard();
+  }
 }
 
 function refreshRankBoard() {
-  let hasCookie = getCookie('rank');
-  if (hasCookie) {
+  if (getCookie('rank')) {
     $('#rankboard').empty();
     let i = 1;
     for (let entry of rank) {
-      $('#rankboard').append(`<li class="rankboard__entry"><span class="rankboard__rank">${i++}</span><span class="rankboard__name">${entry[0]}</span><span class="rankboard__scores">${entry[1]}</span>Points</li>`);
+      $('#rankboard').append(`<li class="rankboard__entry"><span class="rankboard__rank">${i++}</span><span class="rankboard__name">${entry[0]}</span><span class="rankboard__scores">${entry[1]}</span></li>`);
     }
+  } else {
+    $('#rankboard').empty();
+    $('#rankboard').append(`<li class="rankboard__empty-info">Haven't Got Any Rank Yet</li><li class="rankboard__empty-info">Go Play Around</li><li class="rankboard__empty-info">And Enjoy Yourself</li>`);
   }
 }
 
@@ -188,8 +193,8 @@ function initGame() {
   unmatchedNumber = 0;
   moves = 0;
   scores = 0;
-  elemPlayDuration.text('');
-  elemMoves.text('');
+  elemPlayDuration.text('--');
+  elemMoves.text('--');
 
   // Assgin signs to cards
   let signArray = shuffle(createSignArray(signList)); // Create sign array and shuffle it
@@ -378,6 +383,7 @@ $('#btn-confirm').click(function() {
     ranking();
     saveRank();
     refreshRankBoard();
+    initGame();
     $('.board').addClass('board--hide');
   } else {
     console.log('empty!');
@@ -386,4 +392,24 @@ $('#btn-confirm').click(function() {
 
 $('#btn-resetrank').click(function() {
   resetRank();
+});
+
+$('#btn-rank').click(function() {
+  $('aside').css('display', 'flex');
+})
+
+$('#btn-close').click(function() {
+  $('aside').css('display', 'none');
+})
+
+// Hotfix
+let elemAside = $('aside');
+$(window).resize(function() {
+  if ($(document).width() > 769) {
+    if (elemAside.css('display') == 'none') {
+      elemAside.css('display', 'flex');
+    }
+  } else {
+    elemAside.css('display', 'none');
+  }
 });
