@@ -30,6 +30,7 @@ let signList = [
 //   '<i class="fa fa-firefox"></i>'
 // ];
 let matchMode = false;
+let gameLocked = true;
 
 /**
  * Create an array that maps all cards in the table.
@@ -117,6 +118,7 @@ function finishing() {
   $('#scores').text(scores);
   $('.board').removeClass('board--hide');
   $('.board__slide').removeClass('board__slide--animation-slidetoleft board__slide--animation-slidetoorigin');
+  pauseGame();
 }
 
 let rank = [];
@@ -206,14 +208,17 @@ function initGame() {
 
 function startGame() {
   clockState = 20;
+  gameLocked = false;
 }
 
 function pauseGame() {
   clockState = 0;
+  gameLocked = true;
 }
 
 function resumeGame() {
   clockState = 20;
+  gameLocked = false;
 }
 
 function saveGame() {
@@ -253,7 +258,7 @@ function loadGame() {
  * @return {boolean}
  */
 function isEnabled(obj) {
-  let disabled = matchMode || obj.hasClass('card--flag-matched');
+  let disabled = gameLocked || matchMode || obj.hasClass('card--flag-matched');
   return !disabled;
 }
 /**
@@ -317,6 +322,9 @@ $(document).ready(function() {
       break;
     }
   }, 1000);
+
+  // Initialize cards
+  initGame();
 
   // Load and refresh rank board
   loadRank();
