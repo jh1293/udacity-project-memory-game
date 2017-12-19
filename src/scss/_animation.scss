@@ -11,13 +11,13 @@
   }
   51% {
     transform: rotateY(90deg);
-    font-size: 1.5em;
+    font-size: 24px;
     background: #00B3E4
 
   }
   100% {
     transform: rotateY(0deg);
-    font-size: 1.5em;
+    font-size: 24px;
     background: #00B3E4;
   }
 }
@@ -25,7 +25,7 @@
 @keyframes match {
   0% {
     transform: scale(1, 1);
-    font-size: 1.5em;
+    font-size: 24px;
     background: #00CDBA;
   }
   30% {
@@ -39,7 +39,7 @@
   }
   100% {
     transform: scale(1, 1);
-    font-size: 1.5em;
+    font-size: 24px;
     background: #00CDBA;
   }
 }
@@ -47,7 +47,7 @@
 @keyframes unmatch {
   0% {
     transform: rotate(0deg);
-    font-size: 1.5em;
+    font-size: 24px;
     background: #F95B3C;
   }
   10% {
@@ -64,12 +64,12 @@
   }
   50% {
     transform: rotate(0deg) translate(0, 0) rotateY(0deg);;
-    font-size: 1.5em;
+    font-size: 24px;
     background: #F95B3C;
   }
   74% {
     transform: rotateY(90deg);
-    font-size: 1.5em;
+    font-size: 24px;
     background: #2f3c4a;
   }
   75% {

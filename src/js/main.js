@@ -9,26 +9,26 @@
 //   '<i class="fa fa-stack-overflow"></i>',
 //   '<i class="fa fa-github"></i>'
 // ];
-// let signList = [
-//   '<i class="fa fa-firefox"></i>',
-//   '<i class="fa fa-firefox"></i>',
-//   '<i class="fa fa-firefox"></i>',
-//   '<i class="fa fa-firefox"></i>',
-//   '<i class="fa fa-chrome"></i>',
-//   '<i class="fa fa-chrome"></i>',
-//   '<i class="fa fa-chrome"></i>',
-//   '<i class="fa fa-chrome"></i>'
-// ];
 let signList = [
   '<i class="fa fa-firefox"></i>',
   '<i class="fa fa-firefox"></i>',
   '<i class="fa fa-firefox"></i>',
   '<i class="fa fa-firefox"></i>',
-  '<i class="fa fa-firefox"></i>',
-  '<i class="fa fa-firefox"></i>',
-  '<i class="fa fa-firefox"></i>',
-  '<i class="fa fa-firefox"></i>'
+  '<i class="fa fa-chrome"></i>',
+  '<i class="fa fa-chrome"></i>',
+  '<i class="fa fa-chrome"></i>',
+  '<i class="fa fa-chrome"></i>'
 ];
+// let signList = [
+//   '<i class="fa fa-firefox"></i>',
+//   '<i class="fa fa-firefox"></i>',
+//   '<i class="fa fa-firefox"></i>',
+//   '<i class="fa fa-firefox"></i>',
+//   '<i class="fa fa-firefox"></i>',
+//   '<i class="fa fa-firefox"></i>',
+//   '<i class="fa fa-firefox"></i>',
+//   '<i class="fa fa-firefox"></i>'
+// ];
 let matchMode = false;
 
 /**
