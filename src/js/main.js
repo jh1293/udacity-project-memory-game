@@ -237,7 +237,7 @@ function loadGame() {
     cardsData[index] = value.split('@')
   });
   $('.card').each(function(index) {
-    $(this).removeClass('card');
+    $(this).removeClass('card card--flag-matched card--animation-reveal card--animation-match card--animation-unmatch card--flag-active');
     $(this).addClass(cardsData[index][0]);
     $(this).html(cardsData[index][1]);
   });
