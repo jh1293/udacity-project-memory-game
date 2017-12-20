@@ -574,7 +574,6 @@ $('#btn-return').click(function() {
 
 $('#btn-confirm').click(function() {
   name = $('#ipt-name').val();
-  // TODO Trim user input string
   if (name) {
     addToRank();
     ranking();
