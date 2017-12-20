@@ -1,4 +1,4 @@
-/** Global variables. */
+/** All possible signs. */
 // let signList = [
 //   '<i class="fa fa-internet-explorer"></i>',
 //   '<i class="fa fa-firefox"></i>',
@@ -29,8 +29,29 @@ let signList = [
 //   '<i class="fa fa-firefox"></i>',
 //   '<i class="fa fa-firefox"></i>'
 // ];
+
+/** Global variables. */
+let playDuration;
+let clock;
+let clockState;
+let tier;
+let moves = 0;
+let scores = 0;
+let name = '';
+let rank = [];
 let matchMode = false;
 let gameLocked = true;
+
+/** Pre-stored DOM nodes. */
+let elemPlayDuration = $('#play-duration');
+let elemMoves = $('#moves');
+let elemAside = $('aside');
+let elemBoard = $('.board');
+let elemBoardSlide = $('.board__slide');
+let elemBoardScores = $('#scores');
+let elemBoardSumMoves = $('#summarize-moves');
+
+
 
 /**
  * Create an array that maps all cards in the table.
@@ -40,6 +61,8 @@ let gameLocked = true;
 function createSignArray(array) {
   return [...array, ...array];
 }
+
+
 
 /**
  * FIsher-Yates Shuffle.
@@ -59,76 +82,79 @@ function shuffle(array) {
 
 
 
+/** The followings are cookie related functions. */
+
+/**
+ * Set a certain cookie.
+ * @param {string} cname - Key.
+ * @param {string} cvalue - Value.
+ * @param {number} exdays - Days expected for the cookie to expire.
+ */
 function setCookie(cname, cvalue, exdays) {
-    var d = new Date();
-    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-    var expires = "expires="+d.toUTCString();
-    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+
+  // Generate expire date string
+  let expires = new Date();
+  expires.setTime(expires.getTime() + (exdays * 24 * 60 * 60 * 1000));
+
+  // Set cookie
+  // document.cookie = cname + '=' + cvalue + ';' + 'expires=' + expires.toUTCString() + ';path=/';
+  document.cookie = `${cname}=${cvalue};expires=${expires.toUTCString()};path=/`;
 }
 
+
+
+/**
+ * Get a certain cookie.
+ * @param {string} cname - Indicate which key to be fetched.
+ * @return {string} Either return a string containing fetched value of key, if there is one; or return an empty string, if there isn't one.
+ */
 function getCookie(cname) {
-    var name = cname + "=";
-    var ca = document.cookie.split(';');
-    for(var i = 0; i < ca.length; i++) {
-        var c = ca[i];
-        while (c.charAt(0) == ' ') {
-            c = c.substring(1);
-        }
-        if (c.indexOf(name) == 0) {
-            return c.substring(name.length, c.length);
-        }
+  let keyString = cname + "=";
+  let pairs = document.cookie.split(';');
+
+  // Iterate array of key-value pairs
+  for(let i = 0; i < pairs.length; i++) {
+    let pair = pairs[i];
+    // If the pair begins with an empty space character, remove it
+    while (pair.charAt(0) == ' ') {
+      pair = pair.substring(1);
     }
-    return "";
-}
-
-function deleteCookie(cname) {
-  document.cookie = cname + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-}
-
-
-
-// Game State: 10 - Standby; 20 - running; 30 - Game Over
-let playDuration;
-let clockState;
-let matchedNumber = 0;
-let unmatchedNumber = 0;
-let moves = 0;
-let scores = 0;
-let clock;
-let tier;
-
-function finishing() {
-  // Assessing stars
-  tier = Math.floor(--playDuration / 30);
-  let elemSummarizeStars = $('#board-stars');
-  if (tier == 0) {
-    console.log('Best');
-    elemSummarizeStars.html('<i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i>');
-  } else if (tier == 1) {
-    console.log('Good');
-    elemSummarizeStars.html('<i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i>');
-  } else {
-    console.log('Keep Practice');
-    elemSummarizeStars.html('<i class="fa fa-star" aria-hidden="true"></i>');
+    // If current subarray is the one we need, trim the value, return it, and abort function
+    if (pair.indexOf(keyString) == 0) {
+      return pair.substring(keyString.length, pair.length);
+    }
   }
-  // Assessing moves
-  $('#summarize-moves').text(moves);
-  // Assessing scores
-  scores = Math.floor(moves * 180 / playDuration);
-  $('#scores').text(scores);
-  $('.board').removeClass('board--hide');
-  $('.board__slide').removeClass('board__slide--animation-slidetoleft board__slide--animation-slidetoorigin');
-  pauseGame();
+
+  // Return falsy as default
+  return "";
 }
 
-let rank = [];
 
-// let rank = [['Jeff', 855], ['Jeff', 1552], ['Jeff', 496]];
 
+/**
+ * Delete a certain cookie.
+ * @param {string} cname - Indicate which key to be deleted.
+ */
+function deleteCookie(cname) {
+  document.cookie = `${cname}=; expires=Thu, 01 Jan 1970 00:00:01 GMT;`;
+}
+
+
+
+/** The followings are ranking related functions. */
+
+/**
+ * Add name and scores within current session to the rank array.
+ */
 function addToRank() {
   rank.push([name, scores]);
 }
 
+
+
+/**
+ * Sort rank array in descending order and keep rank array at length of 10.
+ */
 function ranking() {
   rank.sort(function(a, b) {
     return b[1] - a[1];
@@ -136,6 +162,11 @@ function ranking() {
   rank.splice(10, rank.length - 10);
 }
 
+
+
+/**
+ * Compress rank list and save it to cookie.
+ */
 function saveRank() {
   let rowRankString = [];
   for (let pairs of rank) {
@@ -145,6 +176,11 @@ function saveRank() {
   setCookie('rank', rowRankString, 7)
 }
 
+
+
+/**
+ * Load rank info from cookie, parse it and assign it to rank array.
+ */
 function loadRank() {
   let resolvedRankString = [];
   let rowRankString = getCookie('rank');
@@ -158,6 +194,11 @@ function loadRank() {
   }
 }
 
+
+
+/**
+ * Clear rank list in cookie and empty rank board.
+ */
 function resetRank() {
   if (getCookie('rank')) {
     rank = [];
@@ -167,6 +208,11 @@ function resetRank() {
   }
 }
 
+
+
+/**
+ * Read rank array and generate html string containing rank info.
+ */
 function refreshRankBoard() {
   if (getCookie('rank')) {
     $('#rankboard').empty();
@@ -182,17 +228,33 @@ function refreshRankBoard() {
 
 
 
+/**
+ * Show rank board.
+ */
+function showRank() {
+  elemAside.css('display', 'flex');
+}
 
-let elemPlayDuration = $('#play-duration');
-let elemMoves = $('#moves');
 
-/** Initializing game. */
+
+/**
+ * hide rank board.
+ */
+function hideRank() {
+  elemAside.css('display', 'none');
+}
+
+
+
+/** The followings are game logic related functions. */
+
+/**
+ * Initializing game.
+ */
 function initGame() {
 
   // Initialize game logic related variables
   playDuration = 0;
-  matchedNumber = 0;
-  unmatchedNumber = 0;
   moves = 0;
   scores = 0;
   elemPlayDuration.text('--');
@@ -206,21 +268,54 @@ function initGame() {
   });
 }
 
+
+
+/**
+ * Refresh Time and Moves displayed on the page.
+ */
+function refreshStatus() {
+  elemPlayDuration.text(playDuration++);
+  elemMoves.text(moves);
+}
+
+
+
+/**
+ * Start the game.
+ */
 function startGame() {
   clockState = 20;
   gameLocked = false;
 }
+// TODO Nifty effects when starting the game.
 
+
+
+/**
+ * Pause the game.
+ */
 function pauseGame() {
   clockState = 0;
   gameLocked = true;
 }
+// TODO Button to pause the game.
 
+
+
+/**
+ * Resume the game.
+ */
 function resumeGame() {
   clockState = 20;
   gameLocked = false;
 }
+// TODO Button to resume the game.
 
+
+
+/**
+ * Compress game data and store them to local storage.
+ */
 function saveGame() {
   pauseGame();
   let cardsData = '';
@@ -233,7 +328,13 @@ function saveGame() {
   localStorage.setItem('moves', moves);
   resumeGame();
 }
+// TODO Override existing save warning.
 
+
+
+/**
+ * Parse game data from local storage and assign them on the fly.
+ */
 function loadGame() {
   pauseGame();
   let cardsData = localStorage.getItem('cardsData');
@@ -251,6 +352,11 @@ function loadGame() {
   moves = Number(localStorage.getItem('moves'));
   resumeGame();
 }
+// TODO Override current game warning.
+
+
+
+/** The followings are card related functions */
 
 /**
  * Check if currently clicked card is suitable for activate.
@@ -261,6 +367,10 @@ function isEnabled(obj) {
   let disabled = gameLocked || matchMode || obj.hasClass('card--flag-matched');
   return !disabled;
 }
+// TODO Add feedback when a card is disabled
+
+
+
 /**
  * Activate current clicked card by adding animation class, active flag class and revealed status class.
  * @param {object} obj - jQuery object to be activated.
@@ -268,6 +378,8 @@ function isEnabled(obj) {
 function activate(obj) {
   obj.addClass('card--animation-reveal card--flag-active');
 }
+
+
 
 /**
  * Matching process.
@@ -280,10 +392,7 @@ function matching(activeCards) {
 
     if (activeCards.first().html() == activeCards.last().html()) {
       // Match
-      matchedNumber++;
-      console.log(matchedNumber);
       moves++;
-      console.log('moves: ' + moves);
       activeCards.addClass('card--animation-match');
       window.setTimeout(function() {
         activeCards.addClass('card--flag-matched');
@@ -292,10 +401,7 @@ function matching(activeCards) {
       }, 600);
     } else {
       // Unmatch
-      unmatchedNumber++;
-      console.log(unmatchedNumber);
       moves++;
-      console.log('moves: ' + moves);
       activeCards.addClass('card--animation-unmatch');
       window.setTimeout(function() {
           activeCards.removeClass('card--animation-reveal card--animation-unmatch card--flag-active');
@@ -305,12 +411,90 @@ function matching(activeCards) {
   }
 }
 
-function refreshStatus() {
-  elemPlayDuration.text(playDuration++);
-  elemMoves.text(moves);
+
+
+/**
+ * Check if all cards were being matched.
+ * @return {boolean} If the number of matched cards equals to total number of cards, return true.
+ */
+function isGameCompleted() {
+  return $('.card--flag-matched').length == 16;
 }
 
-/** Document ready event. */
+
+
+/**
+ * Finishing current session of game.
+ * This function was being called every time when player matches all cards in the table.
+ */
+function finishGame() {
+
+  // Assessing tiers
+  tier = Math.floor(--playDuration / 30);
+  let elemSummarizeStars = $('#board-stars');
+  if (tier == 0) {
+    elemSummarizeStars.html('<i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i>');
+  } else if (tier == 1) {
+    elemSummarizeStars.html('<i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i>');
+  } else {
+    elemSummarizeStars.html('<i class="fa fa-star" aria-hidden="true"></i>');
+  }
+
+  // Assessing scores
+  scores = Math.floor(moves * 180 / playDuration);
+
+  // Handling result and log board
+  elemBoardSumMoves.text(moves);
+  elemBoardScores.text(scores);
+  showBoard();
+}
+
+
+
+/**
+ * Show result and log board.
+ */
+function showBoard() {
+  elemBoardSlide.removeClass('board__slide--animation-slidetoleft board__slide--animation-slidetoorigin');
+  elemBoard.removeClass('board--hide');
+}
+
+
+
+/**
+ * Hide result and log board.
+ */
+function hideBoard() {
+  elemBoardSlide.removeClass('board__slide--animation-slidetoleft board__slide--animation-slidetoorigin');
+  elemBoard.addClass('board--hide');
+}
+
+
+
+/**
+ * Slide board to show log area.
+ */
+function boardShowLog() {
+  elemBoardSlide.removeClass('board__slide--animation-slidetoleft board__slide--animation-slidetoorigin');
+  elemBoardSlide.addClass('board__slide--animation-slidetoleft');
+}
+
+
+
+/**
+ * Slide board to return to result area.
+ */
+function boardReturn() {
+  elemBoardSlide.removeClass('board__slide--animation-slidetoleft board__slide--animation-slidetoorigin');
+  elemBoardSlide.addClass('board__slide--animation-slidetoorigin');
+}
+
+
+
+/**
+ * Events handling area.
+ * Events fired -> Call function.
+ */
 $(document).ready(function() {
 
   // Set clock
@@ -331,23 +515,27 @@ $(document).ready(function() {
   refreshRankBoard();
 });
 
-/** Start Game <button> click event. */
+
+
 $('#btn-start').click(function() {
   initGame();
   startGame();
 });
 
-/** Save Game <button> click event. */
+
+
 $('#btn-save').click(function() {
   saveGame();
 });
 
-/** Laod Game <button> click event. */
+
+
 $('#btn-load').click(function() {
   loadGame();
 });
 
-/** Card <li> click event. */
+
+
 $('.card').click(function() {
   if (
     isEnabled($(this))
@@ -355,69 +543,77 @@ $('.card').click(function() {
     activate($(this));
     matching($('.card--flag-active'));
     setTimeout(function() {
-      if ($('.card--flag-matched').length == 16) {
+      if (isGameCompleted()) {
         pauseGame();
-        finishing();
+        finishGame();
       }
     }, 600);
   }
 });
 
-/** Replay <button> click event. */
+
+
 $('#btn-replay').click(function() {
   initGame();
-  $('.board__slide').removeClass('board__slide--animation-slidetoleft board__slide--animation-slidetoorigin');
-  $('.board').addClass('board--hide');
+  hideBoard();
 });
 
-/** Log <button> click event. */
+
+
 $('#btn-log').click(function() {
-  $('.board__slide').removeClass('board__slide--animation-slidetoleft board__slide--animation-slidetoorigin');
-  $('.board__slide').addClass('board__slide--animation-slidetoleft');
+  boardShowLog();
 });
+
+
 
 $('#btn-return').click(function() {
-  $('.board__slide').removeClass('board__slide--animation-slidetoleft board__slide--animation-slidetoorigin');
-  $('.board__slide').addClass('board__slide--animation-slidetoorigin');
+  boardReturn();
 });
 
-let name = '';
+
 
 $('#btn-confirm').click(function() {
   name = $('#ipt-name').val();
+  // TODO Trim user input string
   if (name) {
-    console.log(name);
     addToRank();
     ranking();
     saveRank();
     refreshRankBoard();
     initGame();
-    $('.board').addClass('board--hide');
+    hideBoard();
   } else {
-    console.log('empty!');
+    // TODO Show feedbacks when illegal or empty input received
   }
 });
+
+
 
 $('#btn-resetrank').click(function() {
   resetRank();
 });
 
+
+
 $('#btn-rank').click(function() {
-  $('aside').css('display', 'flex');
-})
+  showRank();
+});
+
+
 
 $('#btn-close').click(function() {
-  $('aside').css('display', 'none');
-})
+  hideRank();
+});
 
-// Hotfix
-let elemAside = $('aside');
+
+
+/** Hotfix for rank board */
 $(window).resize(function() {
   if ($(document).width() > 769) {
     if (elemAside.css('display') == 'none') {
-      elemAside.css('display', 'flex');
+      showRank();
     }
   } else {
-    elemAside.css('display', 'none');
+    hideRank();
   }
 });
