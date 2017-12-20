@@ -38,7 +38,6 @@ body {
 
       &__title {
         color: #fff;
-
       }
     }
   }
@@ -111,8 +110,8 @@ body {
         flex-flow: row wrap;
         justify-content: center;
         align-items: center;
-        background: linear-gradient(to bottom right, #03cbbe, #a880ce);
-        box-shadow: 5px 5px 20px 5px #ccc;
+        background: #abdce8;
+        box-shadow: 0 3px 10px 2px #ccc;
 
         .card {
           display: flex;
@@ -318,13 +317,6 @@ body {
             padding: 0 16px;
           }
 
-          .counter__time {
-
-          }
-
-          .counter__moves {
-
-          }
           span {
             width: 40px;
             text-align: left;
@@ -477,7 +469,6 @@ body {
           justify-content: space-around;
           align-items: center;
           width: 40%;
-          // margin: 0 36px;
         }
 
         &__counters {
@@ -486,7 +477,6 @@ body {
           justify-content: space-around;
           align-items: center;
           width: 60%;
-          // margin: 0 30px;
 
           .counter {
             display: flex;
@@ -495,16 +485,8 @@ body {
             align-items: center;
             width: 120px;
             height: 40px;
-            // margin: 0 30px;
           }
 
-          .counter__time {
-
-          }
-
-          .counter__moves {
-
-          }
           span {
             width: 50px;
             text-align: left;
@@ -671,13 +653,6 @@ body {
             margin: 0 30px;
           }
 
-          .counter__time {
-
-          }
-
-          .counter__moves {
-
-          }
           span {
             width: 50px;
             text-align: left;
@@ -838,13 +813,6 @@ body {
             height: 40px;
           }
 
-          .counter__time {
-
-          }
-
-          .counter__moves {
-
-          }
           span {
             width: 50px;
             text-align: left;

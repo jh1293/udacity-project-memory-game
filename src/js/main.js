@@ -1,34 +1,14 @@
 /** All possible signs. */
-// let signList = [
-//   '<i class="fa fa-internet-explorer"></i>',
-//   '<i class="fa fa-firefox"></i>',
-//   '<i class="fa fa-chrome"></i>',
-//   '<i class="fa fa-opera"></i>',
-//   '<i class="fa fa-safari"></i>',
-//   '<i class="fa fa-edge"></i>',
-//   '<i class="fa fa-stack-overflow"></i>',
-//   '<i class="fa fa-github"></i>'
-// ];
 let signList = [
-  '<i class="fa fa-firefox"></i>',
-  '<i class="fa fa-firefox"></i>',
-  '<i class="fa fa-firefox"></i>',
+  '<i class="fa fa-internet-explorer"></i>',
   '<i class="fa fa-firefox"></i>',
   '<i class="fa fa-chrome"></i>',
-  '<i class="fa fa-chrome"></i>',
-  '<i class="fa fa-chrome"></i>',
-  '<i class="fa fa-chrome"></i>'
+  '<i class="fa fa-opera"></i>',
+  '<i class="fa fa-safari"></i>',
+  '<i class="fa fa-edge"></i>',
+  '<i class="fa fa-stack-overflow"></i>',
+  '<i class="fa fa-github"></i>'
 ];
-// let signList = [
-//   '<i class="fa fa-firefox"></i>',
-//   '<i class="fa fa-firefox"></i>',
-//   '<i class="fa fa-firefox"></i>',
-//   '<i class="fa fa-firefox"></i>',
-//   '<i class="fa fa-firefox"></i>',
-//   '<i class="fa fa-firefox"></i>',
-//   '<i class="fa fa-firefox"></i>',
-//   '<i class="fa fa-firefox"></i>'
-// ];
 
 /** Global variables. */
 let playDuration;
