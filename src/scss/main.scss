@@ -248,7 +248,24 @@ body {
   display: none;
 }
 
-@media screen and (max-width: 426px) {
+@media screen and (max-width: 320px) {
+
+  html {
+    height: 130%;
+  }
+
+  body {
+    height: 100%;
+    overflow: visible;
+  }
+
+  .board {
+    position: fixed;
+  }
+}
+
+@media screen and (min-width: 320px) and (max-width: 426px) {
+
   .container {
     flex-flow: column nowrap;
 
@@ -431,6 +448,7 @@ body {
 }
 
 @media screen and (min-width: 426px) and (max-width: 768px) {
+
   .container {
     flex-flow: column nowrap;
 
@@ -601,6 +619,7 @@ body {
 }
 
 @media screen and (min-width: 769px) and (max-width: 1024px) {
+
   .container {
     flex-flow: row wrap;
 
@@ -756,6 +775,7 @@ body {
 }
 
 @media screen and (min-width: 1025px) {
+
   .container {
     flex-flow: row wrap;
 
